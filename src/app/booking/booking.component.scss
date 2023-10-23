@@ -1,0 +1,265 @@
+.container {
+  width: 85%;
+  margin: 0 auto;
+  margin-top: -50px;
+  z-index: 1;
+  position: relative;
+}
+
+.booking-stepper {
+  margin-top: 8px;
+  z-index: 2;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  border: 5px solid #c7ecf5; /* Đường viền bên ngoài */
+  box-shadow: inset 0 0 0 2px #40cbeb; /* Đường viền bên trong */
+}
+
+.mat-stepper-header {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.mat-step-label .mat-step-text-label {
+  font-weight: bold;
+}
+
+.mat-horizontal-stepper-header-container {
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f2fbfd;
+  border-top: 2px solid #40cbeb;
+  border-left: 2px solid #40cbeb;
+  border-right: 2px solid #40cbeb;
+  border-bottom: 2px solid transparent;
+}
+
+.select-row {
+  display: grid;
+  grid-template-columns: 3fr 3fr 1fr;
+}
+
+.select-label {
+  font-weight: bold;
+}
+
+.mat-h4,
+.mat-body-1,
+.mat-typography .mat-h4,
+.mat-typography .mat-body-1,
+.mat-typography h4 {
+  font-weight: bold;
+}
+
+.date-row {
+  display: flex;
+  flex-direction: column; /* Hiển thị nút theo cột dọc */
+  align-items: flex-start; /* Canh lề trái */
+  margin-bottom: 20px; /* Khoảng cách dưới */
+  margin-top: 10px;
+}
+
+.date-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+  flex-wrap: wrap; /* Ngắt dòng khi cần thiết */
+  align-items: center; /* Canh giữa nút theo chiều dọc */
+  max-width: 100%; /* Để đảm bảo nút không tràn ra ngoài khi ngắt dòng */
+  text-align: center;
+}
+
+.mdc-button__label {
+  font-weight: 400;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between; /* Dàn trang các cột select cách nhau */
+  margin-top: 10px;
+}
+
+.info-column {
+  flex: 1; /* Cột chia đều không gian ngang */
+}
+
+.info-action {
+  text-align: right;
+}
+
+.mdc-button--raised {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.info-seat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; /* Khoảng cách giữa các cột */
+}
+
+.select-radio {
+  display: flex;
+  flex-direction: row; /* Hiển thị các nút radio trên cùng một hàng */
+  justify-content: space-between; /* Cách nhau ra hai phía */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.display-seat-column {
+  border: 2px solid rgb(248, 151, 167);
+  border-radius: 10px;
+}
+
+.display-coach-type {
+  text-align: center;
+  margin-top: 10px;
+  font-size: large;
+  font-weight: bold;
+}
+
+.display-door {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 85px; /* Khoảng cách giữa các cột */
+  height: 60px;
+  line-height: 50px;
+  margin: 20px 15px 0px 15px;
+}
+
+.driver,
+.door {
+  text-align: center;
+  border-radius: 10px;
+}
+
+.driver {
+  background-color: #eeeeee;
+}
+
+.door {
+  border-right: 5px solid #eeeeee;
+}
+
+.display-real-seat {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Four columns with the 3rd column having 0 width */
+  height: 50px;
+  line-height: 50px;
+  margin: 20px 15px 0px 15px;
+  text-align: center;
+  gap: 15px
+}
+
+.seat {
+  border: 3px solid #eeeeee;
+  border-radius: 10px;
+}
+
+.info-ticket {
+  background-color: rgb(240, 240, 240);
+  border: 2px solid rgb(248, 151, 167);
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.mini-header {
+  font-size: large;
+  font-weight: bold;
+  height: 50px;
+  line-height: 50px;
+  margin: 20px 20px 20px 20px;
+}
+
+.info-line {
+  display: grid;
+  grid-template-columns: 3fr 7fr; /* Four columns with the 3rd column having 0 width */
+  margin-top: 20px;
+  gap: 15px; /* Khoảng cách giữa các cột */
+  line-height: 2;
+}
+
+.arrow {
+  color: yellow;
+  font-weight: bold;
+}
+
+.label-left {
+  text-align: right;
+  font-weight: bold;
+}
+
+.main-right {
+  margin-right: 10px;
+}
+
+.mini-footer {
+  color: rgb(5, 126, 5);
+  height: 50px;
+  line-height: 50px;
+  margin: 20px 20px 20px 20px;
+  line-height: 2;
+}
+
+.instruction {
+  text-align: center;
+  border: 2px solid rgb(248, 151, 167);
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.instruction-header {
+  font-size: x-large;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.seat-instruction-line {
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+  gap: 20px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin: 15px;
+}
+
+.avail-seat {
+  border: 3px solid #eeeeee;
+  border-radius: 10px;
+  font-size: larger;
+}
+
+.selected-seat {
+  border: 3px solid #eeeeee;
+  border-radius: 10px;
+  background-color: rgb(248, 248, 161);
+  font-size: larger;
+}
+
+.unavail-seat {
+  border: 3px solid #eeeeee;
+  background-color: #eeeeee;
+  border-radius: 10px;
+  color: #eeeeee;
+  font-size: larger;
+}
+
+mat-form-field {
+  width: 90%;
+  height: 60%;
+}
+
+.select-icon {
+  color: white !important;
+  background-color: #e91e63 !important;
+  margin-top: -6px !important;
+  width: 70% !important;
+  border-radius: 2px;
+}
+
+.mat-mdc-select-arrow {
+  display: none !important;
+}

@@ -1,0 +1,312 @@
+<div class="container">
+    <mat-stepper [linear]="true" #stepper class="booking-stepper" [orientation]="(stepperOrientation | async)!">
+        <mat-step [stepControl]="firstFormGroup" label="Chọn nơi đi, nơi đến">
+            <form [formGroup]="firstFormGroup">
+                <div class="select-row">
+                    <div class="select-column">
+                        <h4 class="select-label">Chọn điểm đi:</h4>
+                        <mat-form-field>
+                            <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                            <mat-select required>
+                                <mat-option value="A">
+                                    A
+                                </mat-option>
+                                <mat-option value="B">
+                                    B
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="select-column">
+                        <h4 class="select-label">Chọn điểm đến:</h4>
+                        <mat-form-field>
+                            <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                            <mat-select required>
+                                <mat-option value="A">
+                                    A
+                                </mat-option>
+                                <mat-option value="B">
+                                    B
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="select-column">
+                        <h4 class="select-label">Số lượng người đi:</h4>
+                        <mat-form-field>
+                            <mat-icon class="select-icon" matSuffix>expand_more</mat-icon>
+                            <mat-select required>
+                                <mat-option value="A">
+                                    A
+                                </mat-option>
+                                <mat-option value="B">
+                                    B
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="select-radio">
+                    <mat-radio-group required>
+                        <mat-radio-button value="true">Một chiều</mat-radio-button>
+                        <mat-radio-button value="false">Khứ hồi</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="date-row">
+                    <h4 class="select-label">Vui lòng chọn ngày khởi hành từ A đến B:</h4>
+                    <div class="date-container">
+                        <button mat-button matStepperNext>18/10/2023</button>
+                        <button mat-button matStepperNext>18/10/2023</button>
+                        <button mat-button matStepperNext>18/10/2023</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="secondFormGroup" label="Thông tin khách hàng">
+            <form [formGroup]="secondFormGroup">
+                <div class="info-row">
+                    <div class="info-column">
+                        <h4 class="select-label">Họ tên *</h4>
+                        <mat-form-field>
+                            <input matInput formControlName="secondCtrl" placeholder="Nguyễn Văn A" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="info-column">
+                        <h4 class="select-label">Năm sinh *</h4>
+                        <mat-form-field>
+                            <input matInput formControlName="secondCtrl" placeholder="2000" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="info-column">
+                        <h4 class="select-label">Số điện thoại *</h4>
+                        <mat-form-field>
+                            <input matInput formControlName="secondCtrl" placeholder="0397854125" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="info-column">
+                        <h4 class="select-label">Email *</h4>
+                        <mat-form-field>
+                            <input matInput formControlName="secondCtrl" placeholder="a@gmail.com" type="email">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="info-action">
+                    <mat-checkbox>Chấp nhận điều khoản</mat-checkbox>
+                    <a href="" style="margin-left: 10px">>>Xem điều khoản</a>
+                    <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                    <button mat-raised-button color="primary">Xoá thông tin</button>
+                    <button mat-raised-button color="primary" matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế">
+            <form [formGroup]="thirdFormGroup">
+                <div class="info-seat-grid">
+                    <div class="input-column">
+                        <div style="font-size: medium; font-weight: bold; margin-bottom: 20px;">Từ Tp HCM đến Bảo Lộc
+                            ngày 20/10/2023</div>
+                        <div class="select-column">
+                            <h4 class="select-label">Chọn loại ghế</h4>
+                            <mat-form-field>
+                                <mat-select required>
+                                    <mat-option value="A">
+                                        A
+                                    </mat-option>
+                                    <mat-option value="B">
+                                        B
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="select-column">
+                            <h4 class="select-label">Chọn chuyến xe</h4>
+                            <mat-form-field>
+                                <mat-select required>
+                                    <mat-option value="A">
+                                        A
+                                    </mat-option>
+                                    <mat-option value="B">
+                                        B
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="select-pickup-type">
+                            <h4 class="select-label">Nơi lên xe</h4>
+                            <div class="select-radio-3">
+                                <mat-radio-group required>
+                                    <mat-radio-button value="true">Tự ra trạm</mat-radio-button>
+                                    <mat-radio-button value="false">Thuộc lộ trình xe chạy</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+
+                        <div class="select-column">
+                            <mat-form-field>
+                                <mat-select required>
+                                    <mat-option value="A">
+                                        A
+                                    </mat-option>
+                                    <mat-option value="B">
+                                        B
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="select-pickup-type">
+                            <h4 class="select-label">Nơi xuống xe</h4>
+                            <div class="select-radio-3">
+                                <mat-radio-group required>
+                                    <mat-radio-button value="true">Tự ra trạm</mat-radio-button>
+                                    <mat-radio-button value="false">Thuộc lộ trình xe chạy</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+
+                        <div class="select-column">
+                            <mat-form-field>
+                                <mat-select required>
+                                    <mat-option value="A">
+                                        A
+                                    </mat-option>
+                                    <mat-option value="B">
+                                        B
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <h4 class="select-label">Yêu cầu</h4>
+                            <mat-form-field>
+                                <input matInput formControlName="thirdCtrl" placeholder="Vd: có trẻ em">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="display-seat-column">
+                        <div class="display-coach-type">Giường 34</div>
+                        <div class="display-door">
+                            <div class="driver">Lái xe</div>
+                            <div class="door">Cửa lên</div>
+                        </div>
+
+                        <div class="display-real-seat" [style.grid-template-columns]="seatGrid">
+                            <div class="seat">1</div>
+                            <div class="seat">2</div>
+                            <div class="fake-seat">&nbsp;</div>
+                            <div class="seat">3</div>
+                            <div class="seat">4</div>
+                            <div class="seat">5</div>
+                            <div class="fake-seat">&nbsp;</div>
+                            <div class="seat">7</div>
+                        </div>
+                    </div>
+                    <div class="info-ticket">
+                        <div class="mini-header">
+                            <div>Thông tin</div>
+                            <hr>
+                        </div>
+                        <div class="info-main">
+                            <div class="info-line">
+                                <div class="label-left">Họ và tên</div>
+                                <div class="info-right">Nguyễn Văn Thuận</div>
+                            </div>
+                        </div>
+                        <div class="info-main">
+                            <div class="info-line">
+                                <div class="label-left">Điện thoại</div>
+                                <div class="info-right">0395.458.578</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Điểm lên xe</div>
+                                <div class="info-right">266 Lê Hồng Phong - Tp HCM</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Loại ghế</div>
+                                <div class="info-right">Ghế nằm</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Chuyến</div>
+                                <div class="info-right">TP. Hồ Chí Minh - Đà Lạt</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Thời gian</div>
+                                <div class="info-right">12:00 ngày 26/10/2023 (Giờ khởi hành là giờ tính từ Tp. Hồ Chí
+                                    Minh)</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Số ghế</div>
+                                <div class="info-right">2</div>
+                            </div>
+
+                            <div class="info-line">
+                                <div class="label-left">Chi phí</div>
+                                <div class="info-right">230,000</div>
+                            </div>
+
+                            <div class="mini-footer">
+                                <hr>
+                                <div>(*) Chi phí đã bao gồm: VAT, bảo hiểm hành khách, dịch vụ Wifi, nước và khăn lạnh
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button mat-raised-button color="primary" matStepperNext>Hoàn tất chọn ghế <span class="arrow"> >
+                        </span>
+                    </button>
+                    <button mat-raised-button color="primary" matStepperPrevious>Trở lại</button>
+                    <button mat-raised-button color="primary">Huỷ</button>
+                </div>
+
+                <div class="info-seat-grid" style="margin-top: 20px;">
+                    <div class="instruction">
+                        <div>
+                            <div class="instruction-header">Ghi chú</div>
+                            <div>Click vào sơ đồ ghế để chọn/bỏ chọn ghế</div>
+                        </div>
+
+                        <div class="seat-instruction">
+                            <div class="seat-instruction-line">
+                                <div class="avail-seat">A1</div>
+                                <div>Ghế trống</div>
+                            </div>
+                            <div class="seat-instruction-line">
+                                <div class="unavail-seat">A4</div>
+                                <div>Ghế đã có khách</div>
+                            </div>
+                            <div class="seat-instruction-line">
+                                <div class="selected-seat">A3</div>
+                                <div>Ghế đã chọn</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Thanh toán</ng-template>
+            <p>You are now done.</p>
+            <div>
+                <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
+</div>
