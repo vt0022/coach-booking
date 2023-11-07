@@ -1,9 +1,11 @@
 .container {
   width: 85%;
+  height: 100%;
   margin: 0 auto;
   margin-top: -50px;
   z-index: 1;
   position: relative;
+  margin-bottom: 100px;
 }
 
 .booking-stepper {
@@ -62,7 +64,7 @@
 
 .date-container {
   display: grid;
-  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+  grid-template-columns: repeat(10, 1fr);
   flex-wrap: wrap; /* Ngắt dòng khi cần thiết */
   align-items: center; /* Canh giữa nút theo chiều dọc */
   max-width: 100%; /* Để đảm bảo nút không tràn ra ngoài khi ngắt dòng */
@@ -74,8 +76,11 @@
 }
 
 .info-row {
-  display: flex;
-  justify-content: space-between; /* Dàn trang các cột select cách nhau */
+  // display: flex;
+  // justify-content: space-between; /* Dàn trang các cột select cách nhau */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px; /* Khoảng cách giữa các cột */
   margin-top: 10px;
 }
 
@@ -96,6 +101,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px; /* Khoảng cách giữa các cột */
+  grid-auto-rows: 1fr;
+}
+
+.input-column .info-ticket .display-seat-column {
+  height: fit-content;
 }
 
 .select-radio {
@@ -114,6 +124,13 @@
   text-align: center;
   margin-top: 10px;
   font-size: large;
+  font-weight: bold;
+}
+
+.display-decker {
+  text-align: center;
+  margin-top: 10px;
+  font-size: medium;
   font-weight: bold;
 }
 
@@ -150,12 +167,20 @@
   line-height: 50px;
   margin: 20px 15px 0px 15px;
   text-align: center;
-  gap: 15px
+  gap: 15px;
+  height: 50%;
+  margin-bottom: 15px;
 }
 
 .seat {
   border: 3px solid #eeeeee;
   border-radius: 10px;
+}
+
+.main-selected-seat {
+  border: 3px solid #eeeeee;
+  border-radius: 10px;
+  background-color: rgb(248, 248, 161);
 }
 
 .info-ticket {
@@ -248,8 +273,8 @@
 }
 
 mat-form-field {
-  width: 90%;
-  height: 60%;
+  width: 90% !important;
+  height: 60% !important;
 }
 
 .select-icon {
@@ -262,4 +287,29 @@ mat-form-field {
 
 .mat-mdc-select-arrow {
   display: none !important;
+}
+
+.hide-input {
+  visibility: hidden;
+}
+
+.result {
+  text-align: center;
+}
+.completion {
+  font-size: x-large;
+  color: #40cbeb;
+}
+
+.complete-icon {
+  color: #e91e63 !important;
+  border-radius: 2px;
+  display: inline;
+}
+
+.select-icon-v2 {
+  color: white !important;
+  background-color: #e91e63 !important;
+  border-radius: 2px;
+  width: 100% !important;
 }
