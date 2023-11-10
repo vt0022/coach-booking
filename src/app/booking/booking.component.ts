@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -37,6 +38,7 @@ import { TicketService } from '../service/ticket.service';
 import { LineSeat } from '../model/lineseat';
 import { Passenger } from '../model/passenger';
 import { ResponseModel } from '../model/response';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-booking',
@@ -45,6 +47,8 @@ import { ResponseModel } from '../model/response';
   encapsulation: ViewEncapsulation.None,
 })
 export class BookingComponent implements OnInit {
+  @ViewChild('stepper')
+  stepper!: MatStepper;
   // Reactive form
   firstFormGroup = this._formBuilder.group({
     selectedDeparture: [null, Validators.required],
@@ -66,12 +70,12 @@ export class BookingComponent implements OnInit {
   });
 
   thirdFormGroup = this._formBuilder.group({
-    selectedCoachType: [null, Validators.nullValidator],
-    selectedLine: [null, Validators.nullValidator],
-    selectedPickUpType: [null, Validators.nullValidator],
-    selectedPickUp: [null, Validators.nullValidator],
-    selectedDropOffType: [null, Validators.nullValidator],
-    selectedDropOff: [null, Validators.nullValidator],
+    selectedCoachType: [null, Validators.required],
+    selectedLine: [null, Validators.required],
+    selectedPickUpType: [null, Validators.required],
+    selectedPickUp: [null, Validators.required],
+    selectedDropOffType: [null, Validators.required],
+    selectedDropOff: [null, Validators.required],
     houseNumber: ['', Validators.nullValidator],
     note: ['', Validators.nullValidator],
   });
@@ -110,6 +114,7 @@ export class BookingComponent implements OnInit {
   Array: any;
   ticket = new Ticket();
   isDoubleDecker: boolean = false;
+  isStepThreeCompleted: boolean = false;
   response = new ResponseModel();
 
   constructor(
@@ -140,6 +145,7 @@ export class BookingComponent implements OnInit {
     this.addPassenger();
   }
 
+  // Chọn nơi đi
   onSelectDeparture() {
     this.selectedDeparture = this.firstFormGroup.get('selectedDeparture')
       ?.value as Departure | null | undefined;
@@ -154,6 +160,7 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Chọn nơi đến
   onSelectDestination() {
     this.selectedDestination = this.firstFormGroup.get('selectedDestination')
       ?.value as Destination | null | undefined;
@@ -166,30 +173,32 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Chọn ngày đi
   onClickDate(date: Date) {
     this.selectedDate = date;
   }
 
+  // Chọn số lượng người đi
   onSelectQuantity() {
     this.selectedQuantity = this.firstFormGroup.get('selectedQuantity')
       ?.value as number;
-
-    // this.removePassenger();
-
-    // for (let i = 1; i < this.selectedQuantity; i++) {
-    //   this.addPassenger();
-    // }
   }
 
+  // Chọn loại giường/ghế
   onSelectCoachType() {
     this.selectedCoachType = this.thirdFormGroup.get('selectedCoachType')
       ?.value as CoachType | null | undefined;
+    // Danh sách chuyến theo giờ của loại ghế/giường
     this.lineList = [];
+    // Chuyến đã chọn
     this.selectedLine = null;
+    // Ghế đã chọn
     this.selectedSeats = [];
+    // Ghế ở của chuyến và xe đã chọn
     this.selectedLineSeats = [];
+    // Tìm danh sách chuyến theo giờ
     this.getAvailableLinesByDate();
-    // Set column layout
+    // Đặt lại bố cục giường/ghế theo loại xe
     if (this.selectedCoachType?.name === 'Giường nằm 34') {
       this.seatColumnLayout = 5;
       this.isDoubleDecker = true;
@@ -205,6 +214,7 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Chọn chuyến
   onSelectLine() {
     this.selectedLine = this.thirdFormGroup.get('selectedLine')?.value as
       | Line
@@ -212,32 +222,201 @@ export class BookingComponent implements OnInit {
       | undefined;
     this.selectedSeats = [];
     this.selectedLineSeats = [];
+    // Tính tổng tiền
     if (this.selectedLine && this.selectedQuantity) {
       this.totalCost = (this.selectedLine.price || 0) * this.selectedQuantity;
     }
   }
 
+  // Nhấn nút đi tới trang chọn ghế
   onClickToSeatStep() {
+    // Khôi phục lại danh sách hành khách nếu đã sửa đổi
+    if (this.secondFormGroup.dirty) {
+      this.bookingPassengers = [];
+    }
+
+    // Đặt các giá trị mặc định cho các trường bị ẩn
+    this.setDefaultField();
+
+    // Xác thực đầu vào
+    if (this.secondFormGroup.invalid) {
+      this.validateField();
+    } else {
+      // Lưu lại danh sách khách
+      this.storePassengers();
+    }
+  }
+
+  // Chọn ghế
+  onSelectSeat(seat: Seat, lineSeat: LineSeat) {
+    // Đã chọn ghế đó rồi thì loại bỏ ghế đó ra (click lần 2)
+    if (this.selectedSeats.includes(seat)) {
+      // Filter để tạo mảng mới không chứa ghế đã chọn
+      this.selectedSeats = this.selectedSeats.filter((item) => item !== seat);
+      this.selectedLineSeats = this.selectedLineSeats.filter(
+        (item) => item !== lineSeat
+      );
+    } else if (this.selectedSeats.length < this.selectedQuantity) {
+      // Check nếu chưa đủ ghế thì cho chọn
+      this.selectedSeats.push(seat);
+      this.selectedLineSeats.push(lineSeat);
+    }
+  }
+
+  // Chọn phương thức đón
+  onSelectPickUpType() {
+    this.selectedPickUpType = this.thirdFormGroup.get('selectedPickUpType')
+      ?.value as PickUpType | null | undefined;
+    this.pickUpList = [];
+    this.getPickUpList();
+  }
+
+  // Chọn nơi đón
+  onSelectPickUp() {
+    this.selectedPickUp = this.thirdFormGroup.get('selectedPickUp')?.value as
+      | PickUp
+      | null
+      | undefined;
+  }
+
+  // Chọn phương thức trả
+  onSelectDropOffType() {
+    this.selectedDropOffType = this.thirdFormGroup.get('selectedDropOffType')
+      ?.value as DropOffType | null | undefined;
+    this.dropOffList = [];
+    this.getDropOffList();
+  }
+
+  // Chọn nơi trả
+  onSelectDropOff() {
+    this.selectedDropOff = this.thirdFormGroup.get('selectedDropOff')?.value as
+      | DropOff
+      | null
+      | undefined;
+  }
+
+  // Tiến hành đặt vé
+  onClickBooking() {
+    if (this.selectedSeats.length < this.selectedQuantity) {
+      alert('Vui lòng chọn đủ ghế');
+    } else {
+      this.isStepThreeCompleted = true;
+      this.stepper.next();
+      // Tạo model để gửi đi
+      this.ticket._oneway = this.isOneWay;
+      this.ticket.number = this.selectedQuantity;
+      this.ticket.note = this.thirdFormGroup.controls['note'].value!;
+      this.ticket.street_number =
+        this.thirdFormGroup.controls['houseNumber'].value!;
+      this.ticket.cost = this.totalCost;
+      this.ticket._paid = false;
+      this.ticket.pickUp = this.selectedPickUp!;
+      this.ticket.dropOff = this.selectedDropOff!;
+      this.ticket.line = this.selectedLine!;
+      this.ticket.lineSeats = this.selectedLineSeats!;
+      this.ticket.passengers = this.bookingPassengers!;
+      this.bookingTicket();
+    }
+  }
+
+  // Định dạng để hiển thị giờ:phút thay cho chuyến
+  formatTime(time?: string): string {
+    // Convert time to a Date object (assuming today's date)
+    const timeDate = new Date(`2000-01-01T${time}`);
+    // Format the Date object as "HH:mm"
+    return this.datePipe.transform(timeDate, 'HH:mm')!;
+  }
+
+  // Tạo một form group cho một hành khách chứa các thông tin
+  initPassenger(): FormGroup {
+    return this._formBuilder.group({
+      passengerName: ['', Validators.required],
+      passengerAge: ['', Validators.required],
+      passengerPhone: ['', Validators.required],
+      passengerMail: ['', [Validators.email, Validators.required]],
+    });
+  }
+
+  // Thêm một hành khách vào form array
+  addPassenger(): void {
+    for (let i = 1; i < 5; i++) {
+      const passengerArray = <FormArray>(
+        this.secondFormGroup.controls['passengerArray']
+      );
+      passengerArray.push(this.initPassenger());
+    }
+  }
+
+  // Loại bỏ hành khách khỏi form array
+  // (không dùng)
+  removePassenger(): void {
+    const passengerArray = <FormArray>(
+      this.secondFormGroup.controls['passengerArray']
+    );
+    for (let i = 1; i < passengerArray.length; i++) {
+      passengerArray.removeAt(i);
+    }
+  }
+
+  // Xác thực thông tin hành khách
+  validateField() {
     for (let i = 0; i < this.selectedQuantity; i++) {
+      if (
+        this.secondFormGroup
+          .get('passengerArray')
+          ?.get(i.toString())
+          ?.get('passengerName')
+          ?.hasError('required') ||
+        this.secondFormGroup
+          .get('passengerArray')
+          ?.get(i.toString())
+          ?.get('passengerAge')
+          ?.hasError('required') ||
+        this.secondFormGroup
+          .get('passengerArray')
+          ?.get(i.toString())
+          ?.get('passengerMail')
+          ?.hasError('required') ||
+        this.secondFormGroup
+          .get('passengerArray')
+          ?.get(i.toString())
+          ?.get('passengerPhone')
+          ?.hasError('required')
+      ) {
+        alert('Vui lòng nhập đầy đủ thông tin');
+      }
       const yearOfBirth = this.secondFormGroup
         .get('passengerArray')
         ?.get(i.toString())
         ?.get('passengerAge')
         ?.getRawValue();
+      // Nhập năm sinh sai
       if (parseInt(yearOfBirth) < 1900 || parseInt(yearOfBirth) > 2023) {
         alert('Vui lòng nhập năm sinh từ 1900 đến 2023');
-      }
-
-      if (
+      } else if (
+        // Nhập email sai định dạng
         this.secondFormGroup
           .get('passengerArray')
           ?.get(i.toString())
-          ?.get('passengerAge')
+          ?.get('passengerMail')
           ?.hasError('email')
       ) {
         alert('Vui lòng email đúng định dạng ...@gmail.com');
       }
+    }
 
+    // Chưa chấp nhận điều khoản
+    if (this.secondFormGroup.get('acceptTerms')?.invalid) {
+      alert('Vui lòng chấp nhận điều khoản dịch vụ');
+    }
+  }
+
+  // Đặt giá trị mặc định cho các trường thông tin bị ẩn
+  // Tuỳ theo số lượng người sẽ hiển thị form theo kiểu khác nhau
+  setDefaultField() {
+    for (let i = 0; i < this.selectedQuantity; i++) {
+      // Số lượng là 2 thì chỉ có một ô điện thoại
+      // Số lượng >= 3 thì có thêm một ô điện thoại ở hàng 2
       if ((i === 1 && this.selectedQuantity < 3) || i > 1) {
         this.secondFormGroup
           .get('passengerArray')
@@ -246,6 +425,7 @@ export class BookingComponent implements OnInit {
           ?.setValue('default');
       }
 
+      // Chỉ có một ô email duy nhất ở hàng 1
       if (i !== 0) {
         this.secondFormGroup
           .get('passengerArray')
@@ -255,6 +435,8 @@ export class BookingComponent implements OnInit {
       }
     }
 
+    // Đặt mặc định cho tất cả những form group còn lại không được sử dụng
+    // Nếu số lượng < 5
     for (let i = this.selectedQuantity; i < 5; i++) {
       this.secondFormGroup
         .get('passengerArray')
@@ -280,111 +462,9 @@ export class BookingComponent implements OnInit {
         ?.get('passengerAge')
         ?.setValue('default');
     }
-    if (this.secondFormGroup.touched) {
-      this.bookingPassengers = [];
-    }
-    if (this.secondFormGroup.invalid) {
-      alert(
-        'Vui lòng điền đầy đủ thông tin hành khách và chấp nhận điều khoản dịch vụ'
-      );
-    } else {
-      this.storePassengers();
-    }
   }
 
-  onSelectSeat(seat: Seat, lineSeat: LineSeat) {
-    if (this.selectedSeats.includes(seat)) {
-      this.selectedSeats = this.selectedSeats.filter((item) => item !== seat);
-      this.selectedLineSeats = this.selectedLineSeats.filter(
-        (item) => item !== lineSeat
-      );
-    } else if (this.selectedSeats.length < this.selectedQuantity) {
-      this.selectedSeats.push(seat);
-      this.selectedLineSeats.push(lineSeat);
-    }
-  }
-
-  onSelectPickUpType() {
-    this.selectedPickUpType = this.thirdFormGroup.get('selectedPickUpType')
-      ?.value as PickUpType | null | undefined;
-    this.pickUpList = [];
-    this.getPickUpList();
-  }
-
-  onSelectPickUp() {
-    this.selectedPickUp = this.thirdFormGroup.get('selectedPickUp')?.value as
-      | PickUp
-      | null
-      | undefined;
-  }
-
-  onSelectDropOffType() {
-    this.selectedDropOffType = this.thirdFormGroup.get('selectedDropOffType')
-      ?.value as DropOffType | null | undefined;
-    this.dropOffList = [];
-    this.getDropOffList();
-  }
-
-  onSelectDropOff() {
-    this.selectedDropOff = this.thirdFormGroup.get('selectedDropOff')?.value as
-      | DropOff
-      | null
-      | undefined;
-  }
-
-  onClickBooking() {
-    if(this.selectedSeats.length < this.selectedQuantity) {
-      alert('Vui lòng chọn đủ ghế');
-    }
-    this.ticket._oneway = this.isOneWay;
-    this.ticket.number = this.selectedQuantity;
-    this.ticket.note = this.thirdFormGroup.controls['note'].value!;
-    this.ticket.street_number =
-      this.thirdFormGroup.controls['houseNumber'].value!;
-    this.ticket.cost = this.totalCost;
-    this.ticket._paid = false;
-    this.ticket.pickUp = this.selectedPickUp!;
-    this.ticket.dropOff = this.selectedDropOff!;
-    this.ticket.line = this.selectedLine!;
-    this.ticket.lineSeats = this.selectedLineSeats!;
-    this.ticket.passengers = this.bookingPassengers!;
-    this.bookingTicket();
-  }
-
-  formatTime(time?: string): string {
-    // Convert time to a Date object (assuming today's date)
-    const timeDate = new Date(`2000-01-01T${time}`);
-    // Format the Date object as "HH:mm"
-    return this.datePipe.transform(timeDate, 'HH:mm')!;
-  }
-
-  initPassenger(): FormGroup {
-    return this._formBuilder.group({
-      passengerName: ['', Validators.required],
-      passengerAge: ['', Validators.required],
-      passengerPhone: ['', Validators.required],
-      passengerMail: ['', [Validators.email, Validators.required]],
-    });
-  }
-
-  addPassenger(): void {
-    for (let i = 1; i < 5; i++) {
-      const passengerArray = <FormArray>(
-        this.secondFormGroup.controls['passengerArray']
-      );
-      passengerArray.push(this.initPassenger());
-    }
-  }
-
-  removePassenger(): void {
-    const passengerArray = <FormArray>(
-      this.secondFormGroup.controls['passengerArray']
-    );
-    for (let i = 1; i < passengerArray.length; i++) {
-      passengerArray.removeAt(i);
-    }
-  }
-
+  // Lưu lại danh sách hành khách
   storePassengers() {
     for (let i = 0; i < this.selectedQuantity; i++) {
       const passenger = new Passenger();
@@ -404,25 +484,30 @@ export class BookingComponent implements OnInit {
         .get('passengerArray')
         ?.get(i.toString())
         ?.get('passengerMail')?.value as string;
+      // Để rỗng thông tin nếu gặp giá trị mặc định, tức là ô nhập bị ẩn
       if (passenger.email === 'default@gmail.com') {
         passenger.email = '';
       }
       if (passenger.phone === 'default') {
         passenger.phone = '';
       }
+      // Khách đầu tiên là người đặt vé
       if (i === 0) {
         passenger._booking = true;
       }
+      // Đưa vào danh sách
       this.bookingPassengers.push(passenger);
     }
   }
 
+  // Gọi service để lấy danh sách nơi đi
   getDepartureList() {
     this.departureService
       .getDepartureList()
       .subscribe((data) => (this.departureList = data['data']));
   }
 
+  // Gọi service để lấy danh sách nơi đến ứng với nơi đi
   getDestinationListByDeparture() {
     if (this.selectedDeparture?.slug) {
       this.destinationService
@@ -433,6 +518,7 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Gọi service để lấy danh sách ngày có chuyến xe ứng với nơi đi và nơi đến
   getAvailableLinesByDesAndDep() {
     if (this.selectedDeparture && this.selectedDestination) {
       this.lineService
@@ -444,12 +530,14 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Gọi service để lấy danh sách loại xe
   getCouchTypeList() {
     this.coachTypeService
       .getCoachTypeList()
       .subscribe((data) => (this.coachTypeList = data['data']));
   }
 
+  // Gọi service để lấy danh sách chuyến đi ứng với nơi đi, nơi đến, ngày đi và loại xe
   getAvailableLinesByDate() {
     if (
       this.selectedDeparture &&
@@ -468,18 +556,21 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Gọi service để lấy danh sách phương thức đón
   getPickUpTypeList() {
     this.pickUpTypeService
       .getPickUpTypeList()
       .subscribe((data) => (this.pickUpTypeList = data['data']));
   }
 
+  // Gọi service để lấy danh sách phương thức trả
   getDropOffTypeList() {
     this.dropOffTypeService
       .getDropOffTypeList()
       .subscribe((data) => (this.dropOffTypeList = data['data']));
   }
 
+  // Gọi service để lấy danh sách nơi đón ứng với nơi đi và phương thức đón
   getPickUpList() {
     const departureId = this.selectedDeparture?.id ?? '';
     const pickUpTypeId = this.selectedPickUpType?.id ?? '';
@@ -488,6 +579,7 @@ export class BookingComponent implements OnInit {
       .subscribe((data) => (this.pickUpList = data['data']));
   }
 
+  // Gọi service để lấy danh sách nơi trả ứng với nơi đến và phương thức trả
   getDropOffList() {
     const destinationId = this.selectedDestination?.id ?? '';
     const dropOffTypeId = this.selectedDropOffType?.id ?? '';
@@ -496,6 +588,7 @@ export class BookingComponent implements OnInit {
       .subscribe((data) => (this.dropOffList = data['data']));
   }
 
+  // Gọi service để đặt vé
   bookingTicket() {
     this.ticketService.createTicket(this.ticket).subscribe((data) => {
       this.response = data;
@@ -504,6 +597,6 @@ export class BookingComponent implements OnInit {
       } else {
         this.noti = 'Úi, lỗi rồi! Vui lòng đặt lại!';
       }
-    })
+    });
   }
 }

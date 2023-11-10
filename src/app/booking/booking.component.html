@@ -1,5 +1,5 @@
 <div class="container">
-    <mat-stepper [linear]="true" #stepper class="booking-stepper" [orientation]="(stepperOrientation | async)!">
+    <mat-stepper [linear]="true" #stepper class="booking-stepper" [orientation]="(stepperOrientation | async)!" [linear]="true">
         <mat-step [stepControl]="firstFormGroup" label="Chọn nơi đi, nơi đến">
             <form [formGroup]="firstFormGroup">
                 <div class="select-row">
@@ -45,7 +45,7 @@
 
                 <div class="select-radio">
                     <mat-radio-group required formControlName="isOneWay">
-                        <mat-radio-button value="true">Một chiều</mat-radio-button>
+                        <mat-radio-button value="true" checked>Một chiều</mat-radio-button>
                         <mat-radio-button value="false">Khứ hồi</mat-radio-button>
                     </mat-radio-group>
                 </div>
@@ -119,14 +119,14 @@
                 <div class="info-action">
                     <mat-checkbox formControlName="acceptTerms" required>Chấp nhận điều khoản</mat-checkbox>
                     <a href="" style="margin-left: 10px">>>Xem điều khoản</a>
-                    <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                    <button mat-raised-button color="primary" matStepperPrevious>Quay lại</button>
                     <button mat-raised-button color="primary">Xoá thông tin</button>
-                    <button mat-raised-button color="primary" matStepperNext (click)="onClickToSeatStep()">Next</button>
+                    <button mat-raised-button color="primary" matStepperNext (click)="onClickToSeatStep()">Tiếp tục</button>
                 </div>
             </form>
         </mat-step>
 
-        <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế">
+        <mat-step [stepControl]="thirdFormGroup" [completed]="isStepThreeCompleted" label="Chọn ghế">
             <form [formGroup]="thirdFormGroup">
                 <div class="info-seat-grid">
                     <div class="input-column">
@@ -225,6 +225,7 @@
                         </div>
 
                         <ng-container *ngIf="isDoubleDecker; else displaySingleDecker">
+                            <br>
                             <div class="display-decker">Tầng dưới</div>
 
                             <div class="real-seat-container">
@@ -253,6 +254,7 @@
                                 </div>
                             </div>
 
+                            <br>
                             <div class="display-decker">Tầng trên</div>
 
                             <div class="real-seat-container">
@@ -446,7 +448,7 @@
                 <p class="completion">{{noti}}</p>
             </div>
             <div>
-                <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" matStepperPrevious>Quay lại</button>
             </div>
         </mat-step>
     </mat-stepper>
