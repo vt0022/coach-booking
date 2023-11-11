@@ -71,12 +71,19 @@ export class BookingComponent implements OnInit {
 
   thirdFormGroup = this._formBuilder.group({
     selectedCoachType: [null, Validators.required],
+    selectedCoachTypeBack: [null, Validators.required],
     selectedLine: [null, Validators.required],
+    selectedLineBack: [null, Validators.required],
     selectedPickUpType: [null, Validators.required],
+    selectedPickUpTypeBack: [null, Validators.required],
     selectedPickUp: [null, Validators.required],
+    selectedPickUpBack: [null, Validators.required],
     selectedDropOffType: [null, Validators.required],
+    selectedDropOffTypeBack: [null, Validators.required],
     selectedDropOff: [null, Validators.required],
+    selectedDropOffBack: [null, Validators.required],
     houseNumber: ['', Validators.nullValidator],
+    houseNumberBack: ['', Validators.nullValidator],
     note: ['', Validators.nullValidator],
   });
 
@@ -84,37 +91,58 @@ export class BookingComponent implements OnInit {
   ////////////////////////
   selectedQuantity: number = 1;
   seatColumnLayout: number = 4;
+  seatColumnLayoutBack: number = 4; ///////////////////////////////////////
   departureList?: Departure[];
   destinationList?: Destination[];
   dateList?: Date[];
+  dateListBack?: Date[]; ///////////////////////////////////////
   lineList?: Line[];
+  lineListBack?: Line[]; ///////////////////////////////////////
   pickUpTypeList?: PickUpType[];
   dropOffTypeList?: DropOffType[];
   pickUpList?: PickUp[];
+  pickUpListBack?: PickUp[]; ///////////////////////////////////////
   dropOffList?: DropOff[];
+  dropOffListBack?: DropOff[]; ///////////////////////////////////////
   coachTypeList?: CoachType[];
+  coachTypeListBack?: CoachType[]; ///////////////////////////////////////
   selectedDeparture: Departure | null | undefined;
+  selectedDepartureBack: Departure | null | undefined; ///////////////////////////////////////
   selectedDestination: Destination | null | undefined;
+  selectedDestinationBack: Destination | null | undefined; ///////////////////////////////////////
   selectedDate: Date | null | undefined;
+  selectedDateBack: Date | null | undefined; ///////////////////////////////////////
   selectedCoachType: CoachType | null | undefined;
+  selectedCoachTypeBack: CoachType | null | undefined; ///////////////////////////////////////
   selectedLine: Line | null | undefined;
+  selectedLineBack: Line | null | undefined; ///////////////////////////////////////
   selectedSeats: Seat[] = [];
+  selectedSeatsBack: Seat[] = []; ///////////////////////////////////////
   selectedLineSeats: LineSeat[] = [];
+  selectedLineSeatsBack: LineSeat[] = []; ///////////////////////////////////////
   selectedPickUpType: PickUpType | null | undefined;
+  selectedPickUpTypeBack: PickUpType | null | undefined; ///////////////////////////////////////
   selectedPickUp: PickUp | null | undefined;
+  selectedPickUpBack: PickUp | null | undefined; ///////////////////////////////////////
   selectedDropOffType: DropOffType | null | undefined;
+  selectedDropOffTypeBack: DropOffType | null | undefined; ///////////////////////////////////////
   selectedDropOff: DropOff | null | undefined;
+  selectedDropOffBack: DropOff | null | undefined; ///////////////////////////////////////
   bookingPassengers: Passenger[] = [];
   houseNumber: string = '';
+  houseNumberBack: string = ''; ///////////////////////////////////////
   note: string = '';
   totalCost: number = 0;
   isOneWay: boolean = true;
   lineInfo: string = 'Vui lòng chọn ngày khởi hành từ A đến B:';
+  lineInfoBack: string = 'Vui lòng chọn ngày khởi hành từ B đến A:'; ///////////////////////////////////////
   noti: string = '';
   Array: any;
   ticket = new Ticket();
   isDoubleDecker: boolean = false;
+  isDoubleDeckerBack: boolean = false; ///////////////////////////////////////
   isStepThreeCompleted: boolean = false;
+  isError: boolean = false;
   response = new ResponseModel();
 
   constructor(
@@ -154,9 +182,12 @@ export class BookingComponent implements OnInit {
       this.destinationList = this.selectedDeparture.destinations;
       if (this.selectedDestination) {
         this.getAvailableLinesByDesAndDep();
+        this.getAvailableLinesBackByDesAndDep();
         this.lineInfo = `Vui lòng chọn ngày khởi hành từ ${this.selectedDeparture.name} đến ${this.selectedDestination.name}:`;
+        this.lineInfoBack = `Vui lòng chọn ngày khởi hành từ ${this.selectedDestination.name} đến ${this.selectedDeparture.name}:`;
         this.cdr.detectChanges();
       }
+      this.getDestinationBySlug();
     }
   }
 
@@ -167,15 +198,28 @@ export class BookingComponent implements OnInit {
     if (this.selectedDeparture) {
       if (this.selectedDestination) {
         this.getAvailableLinesByDesAndDep();
+        this.getAvailableLinesBackByDesAndDep();
         this.lineInfo = `Vui lòng chọn ngày khởi hành từ ${this.selectedDeparture.name} đến ${this.selectedDestination.name}:`;
+        this.lineInfoBack = `Vui lòng chọn ngày khởi hành từ ${this.selectedDestination.name} đến ${this.selectedDeparture.name}:`;
         this.cdr.detectChanges();
       }
+      this.getDepartureBySlug();
     }
+  }
+
+  // Chọn loại vé
+  onSelectIsOneWay() {
+    this.isOneWay = this.firstFormGroup.get('isOneWay')?.value as boolean;
   }
 
   // Chọn ngày đi
   onClickDate(date: Date) {
     this.selectedDate = date;
+  }
+
+  // Chọn ngày đi
+  onClickDateBack(date: Date) {
+    this.selectedDateBack = date;
   }
 
   // Chọn số lượng người đi
@@ -198,6 +242,7 @@ export class BookingComponent implements OnInit {
     this.selectedLineSeats = [];
     // Tìm danh sách chuyến theo giờ
     this.getAvailableLinesByDate();
+    console.log(this.lineList);
     // Đặt lại bố cục giường/ghế theo loại xe
     if (this.selectedCoachType?.name === 'Giường nằm 34') {
       this.seatColumnLayout = 5;
@@ -214,6 +259,37 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Chọn loại giường/ghế
+  onSelectCoachTypeBack() {
+    this.selectedCoachTypeBack = this.thirdFormGroup.get(
+      'selectedCoachTypeBack'
+    )?.value as CoachType | null | undefined;
+    // Danh sách chuyến theo giờ của loại ghế/giường
+    this.lineListBack = [];
+    // Chuyến đã chọn
+    this.selectedLineBack = null;
+    // Ghế đã chọn
+    this.selectedSeatsBack = [];
+    // Ghế ở của chuyến và xe đã chọn
+    this.selectedLineSeatsBack = [];
+    // Tìm danh sách chuyến theo giờ
+    this.getAvailableLinesBackByDate();
+    // Đặt lại bố cục giường/ghế theo loại xe
+    if (this.selectedCoachTypeBack?.name === 'Giường nằm 34') {
+      this.seatColumnLayoutBack = 5;
+      this.isDoubleDeckerBack = true;
+    } else if (this.selectedCoachTypeBack?.name === 'Giường nằm') {
+      this.seatColumnLayoutBack = 5;
+      this.isDoubleDeckerBack = true;
+    } else if (this.selectedCoachTypeBack?.name === 'Ghế nằm') {
+      this.seatColumnLayoutBack = 4;
+      this.isDoubleDeckerBack = false;
+    } else if (this.selectedCoachTypeBack?.name === 'Phòng nằm') {
+      this.seatColumnLayoutBack = 2;
+      this.isDoubleDeckerBack = true;
+    }
+  }
+
   // Chọn chuyến
   onSelectLine() {
     this.selectedLine = this.thirdFormGroup.get('selectedLine')?.value as
@@ -224,7 +300,23 @@ export class BookingComponent implements OnInit {
     this.selectedLineSeats = [];
     // Tính tổng tiền
     if (this.selectedLine && this.selectedQuantity) {
-      this.totalCost = (this.selectedLine.price || 0) * this.selectedQuantity;
+      this.totalCost =
+        ((this.selectedLine.price || 0) + (this.selectedLineBack?.price || 0)) *
+        this.selectedQuantity;
+    }
+  }
+
+  // Chọn chuyến
+  onSelectLineBack() {
+    this.selectedLineBack = this.thirdFormGroup.get('selectedLineBack')
+      ?.value as Line | null | undefined;
+    this.selectedSeatsBack = [];
+    this.selectedLineSeatsBack = [];
+    // Tính tổng tiền
+    if (this.selectedLineBack && this.selectedQuantity) {
+      this.totalCost =
+        ((this.selectedLine?.price || 0) + (this.selectedLineBack.price || 0)) *
+        this.selectedQuantity;
     }
   }
 
@@ -263,12 +355,39 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Chọn ghế
+  onSelectSeatBack(seat: Seat, lineSeat: LineSeat) {
+    // Đã chọn ghế đó rồi thì loại bỏ ghế đó ra (click lần 2)
+    if (this.selectedSeatsBack.includes(seat)) {
+      // Filter để tạo mảng mới không chứa ghế đã chọn
+      this.selectedSeatsBack = this.selectedSeatsBack.filter(
+        (item) => item !== seat
+      );
+      this.selectedLineSeatsBack = this.selectedLineSeatsBack.filter(
+        (item) => item !== lineSeat
+      );
+    } else if (this.selectedSeatsBack.length < this.selectedQuantity) {
+      // Check nếu chưa đủ ghế thì cho chọn
+      this.selectedSeatsBack.push(seat);
+      this.selectedLineSeatsBack.push(lineSeat);
+    }
+  }
+
   // Chọn phương thức đón
   onSelectPickUpType() {
     this.selectedPickUpType = this.thirdFormGroup.get('selectedPickUpType')
       ?.value as PickUpType | null | undefined;
     this.pickUpList = [];
     this.getPickUpList();
+  }
+
+  // Chọn phương thức đón
+  onSelectPickUpTypeBack() {
+    this.selectedPickUpTypeBack = this.thirdFormGroup.get(
+      'selectedPickUpTypeBack'
+    )?.value as PickUpType | null | undefined;
+    this.pickUpListBack = [];
+    this.getPickUpListBack();
   }
 
   // Chọn nơi đón
@@ -279,12 +398,27 @@ export class BookingComponent implements OnInit {
       | undefined;
   }
 
+  // Chọn nơi đón
+  onSelectPickUpBack() {
+    this.selectedPickUpBack = this.thirdFormGroup.get('selectedPickUpBack')
+      ?.value as PickUp | null | undefined;
+  }
+
   // Chọn phương thức trả
   onSelectDropOffType() {
     this.selectedDropOffType = this.thirdFormGroup.get('selectedDropOffType')
       ?.value as DropOffType | null | undefined;
     this.dropOffList = [];
     this.getDropOffList();
+  }
+
+  // Chọn phương thức trả
+  onSelectDropOffTypeBack() {
+    this.selectedDropOffTypeBack = this.thirdFormGroup.get(
+      'selectedDropOffTypeBack'
+    )?.value as DropOffType | null | undefined;
+    this.dropOffListBack = [];
+    this.getDropOffListBack();
   }
 
   // Chọn nơi trả
@@ -295,10 +429,37 @@ export class BookingComponent implements OnInit {
       | undefined;
   }
 
+  // Chọn nơi trả
+  onSelectDropOffBack() {
+    this.selectedDropOffBack = this.thirdFormGroup.get('selectedDropOffBack')
+      ?.value as DropOff | null | undefined;
+  }
+
   // Tiến hành đặt vé
   onClickBooking() {
-    if (this.selectedSeats.length < this.selectedQuantity) {
+    if (this.selectedSeats.length < this.selectedQuantity && this.isOneWay) {
       alert('Vui lòng chọn đủ ghế');
+    } else if (
+      (this.selectedSeats.length < this.selectedQuantity ||
+        this.selectedSeatsBack.length < this.selectedQuantity) &&
+      !this.isOneWay
+    ) {
+      alert('Vui lòng chọn đủ ghế');
+    } else if (
+      this.isOneWay &&
+      (!this.selectedCoachType || !this.selectedPickUp || !this.selectedDropOff)
+    ) {
+      alert('Vui lòng chọn đầy đủ thông tin');
+    } else if (
+      !this.isOneWay &&
+      (!this.selectedCoachType ||
+        !this.selectedCoachTypeBack ||
+        !this.selectedPickUp ||
+        !this.selectedPickUpBack ||
+        !this.selectedDropOff ||
+        !this.selectedDropOffBack)
+    ) {
+      alert('Vui lòng chọn đầy đủ thông tin');
     } else {
       this.isStepThreeCompleted = true;
       this.stepper.next();
@@ -306,14 +467,35 @@ export class BookingComponent implements OnInit {
       this.ticket._oneway = this.isOneWay;
       this.ticket.number = this.selectedQuantity;
       this.ticket.note = this.thirdFormGroup.controls['note'].value!;
-      this.ticket.street_number =
-        this.thirdFormGroup.controls['houseNumber'].value!;
+      if (this.isOneWay) {
+        this.ticket.street_number =
+          this.thirdFormGroup.controls['houseNumber'].value!;
+        this.ticket.pickUps = [this.selectedPickUp!];
+        this.ticket.dropOffs = [this.selectedDropOff!];
+        this.ticket.lines = [this.selectedLine!];
+        this.ticket.lineSeats = [
+          ...this.selectedLineSeats!,
+          ...this.selectedLineSeatsBack!,
+        ];
+      } else {
+        this.ticket.street_number =
+          this.thirdFormGroup.controls['houseNumber'].value! +
+          ' --- ' +
+          this.thirdFormGroup.controls['houseNumberBack'].value!;
+
+        this.ticket.pickUps = [this.selectedPickUp!, this.selectedPickUpBack!];
+        this.ticket.dropOffs = [
+          this.selectedDropOff!,
+          this.selectedDropOffBack!,
+        ];
+        this.ticket.lines = [this.selectedLine!, this.selectedLineBack!];
+        this.ticket.lineSeats = [
+          ...this.selectedLineSeats!,
+          ...this.selectedLineSeatsBack!,
+        ];
+      }
       this.ticket.cost = this.totalCost;
       this.ticket._paid = false;
-      this.ticket.pickUp = this.selectedPickUp!;
-      this.ticket.dropOff = this.selectedDropOff!;
-      this.ticket.line = this.selectedLine!;
-      this.ticket.lineSeats = this.selectedLineSeats!;
       this.ticket.passengers = this.bookingPassengers!;
       this.bookingTicket();
     }
@@ -518,6 +700,24 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Gọi service để tìm nơi đi của chuyến về
+  getDepartureBySlug() {
+    if (this.selectedDestination) {
+      this.departureService
+        .getDepartureBySlug(this.selectedDestination.slug!)
+        .subscribe((data) => (this.selectedDepartureBack = data['data']));
+    }
+  }
+
+  // Gọi service để tìm nơi đến của chuyến về
+  getDestinationBySlug() {
+    if (this.selectedDeparture) {
+      this.destinationService
+        .getDestinationBySlug(this.selectedDeparture.slug!)
+        .subscribe((data) => (this.selectedDestinationBack = data['data']));
+    }
+  }
+
   // Gọi service để lấy danh sách ngày có chuyến xe ứng với nơi đi và nơi đến
   getAvailableLinesByDesAndDep() {
     if (this.selectedDeparture && this.selectedDestination) {
@@ -527,6 +727,18 @@ export class BookingComponent implements OnInit {
           this.selectedDestination.id
         )
         .subscribe((data) => (this.dateList = data['data']));
+    }
+  }
+
+  // Gọi service để lấy danh sách ngày có chuyến xe ứng với nơi đi và nơi đến
+  getAvailableLinesBackByDesAndDep() {
+    if (this.selectedDepartureBack && this.selectedDestinationBack) {
+      this.lineService
+        .getAvailableLinesByDesAndDep(
+          this.selectedDepartureBack.id,
+          this.selectedDestinationBack.id
+        )
+        .subscribe((data) => (this.dateListBack = data['data']));
     }
   }
 
@@ -556,6 +768,25 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Gọi service để lấy danh sách chuyến đi ứng với nơi đi, nơi đến, ngày đi và loại xe
+  getAvailableLinesBackByDate() {
+    if (
+      this.selectedDepartureBack &&
+      this.selectedDestinationBack &&
+      this.selectedDateBack &&
+      this.selectedCoachTypeBack
+    ) {
+      this.lineService
+        .getAvailableLinesByDate(
+          this.selectedDepartureBack.id,
+          this.selectedDestinationBack.id,
+          this.selectedDateBack,
+          this.selectedCoachTypeBack.id
+        )
+        .subscribe((data) => (this.lineListBack = data['data']));
+    }
+  }
+
   // Gọi service để lấy danh sách phương thức đón
   getPickUpTypeList() {
     this.pickUpTypeService
@@ -572,20 +803,54 @@ export class BookingComponent implements OnInit {
 
   // Gọi service để lấy danh sách nơi đón ứng với nơi đi và phương thức đón
   getPickUpList() {
-    const departureId = this.selectedDeparture?.id ?? '';
-    const pickUpTypeId = this.selectedPickUpType?.id ?? '';
-    this.pickUpService
-      .getPickUpByDepartureAndPickUpType(departureId, pickUpTypeId)
-      .subscribe((data) => (this.pickUpList = data['data']));
+    if (this.selectedDeparture && this.selectedPickUpType) {
+      this.pickUpService
+        .getPickUpByDepartureAndPickUpType(
+          this.selectedDeparture?.id,
+          this.selectedPickUpType?.id
+        )
+        .subscribe((data) => {
+          this.pickUpList = data['data'];
+        });
+    }
+  }
+
+  // Gọi service để lấy danh sách nơi đón ứng với nơi đi và phương thức đón
+  getPickUpListBack() {
+    if (this.selectedDepartureBack && this.selectedPickUpTypeBack) {
+      this.pickUpService
+        .getPickUpByDepartureAndPickUpType(
+          this.selectedDepartureBack?.id,
+          this.selectedPickUpTypeBack?.id
+        )
+        .subscribe((data) => {
+          this.pickUpListBack = data['data'];
+        });
+    }
   }
 
   // Gọi service để lấy danh sách nơi trả ứng với nơi đến và phương thức trả
   getDropOffList() {
-    const destinationId = this.selectedDestination?.id ?? '';
-    const dropOffTypeId = this.selectedDropOffType?.id ?? '';
-    this.dropOffService
-      .getDropOffByDestinationAndDropOffType(destinationId, dropOffTypeId)
-      .subscribe((data) => (this.dropOffList = data['data']));
+    if (this.selectedDestination && this.selectedDropOffType) {
+      this.dropOffService
+        .getDropOffByDestinationAndDropOffType(
+          this.selectedDestination.id,
+          this.selectedDropOffType.id
+        )
+        .subscribe((data) => (this.dropOffList = data['data']));
+    }
+  }
+
+  // Gọi service để lấy danh sách nơi trả ứng với nơi đến và phương thức trả
+  getDropOffListBack() {
+    if (this.selectedDestinationBack && this.selectedDropOffTypeBack) {
+      this.dropOffService
+        .getDropOffByDestinationAndDropOffType(
+          this.selectedDestinationBack.id,
+          this.selectedDropOffTypeBack.id
+        )
+        .subscribe((data) => (this.dropOffListBack = data['data']));
+    }
   }
 
   // Gọi service để đặt vé
@@ -594,8 +859,10 @@ export class BookingComponent implements OnInit {
       this.response = data;
       if (!this.response.error) {
         this.noti = 'Đặt vé thành công';
+        this.isError = false;
       } else {
         this.noti = 'Úi, lỗi rồi! Vui lòng đặt lại!';
+        this.isError = true;
       }
     });
   }

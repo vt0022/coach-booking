@@ -1,8 +1,8 @@
-import { DropOff } from "./dropoff";
-import { Line } from "./line";
-import { LineSeat } from "./lineseat";
-import { Passenger } from "./passenger";
-import { PickUp } from "./pickup";
+import { DropOff } from './dropoff';
+import { Line } from './line';
+import { LineSeat } from './lineseat';
+import { Passenger } from './passenger';
+import { PickUp } from './pickup';
 
 export class Ticket {
   id?: string;
@@ -19,13 +19,13 @@ export class Ticket {
 
   _paid?: boolean;
 
-  pickUp?: PickUp;
+  pickUps?: PickUp[] = [];
 
-  dropOff?: DropOff;
+  dropOffs?: DropOff[] = [];
 
   passengers?: Passenger[] = [];
 
-  line?: Line;
+  lines?: Line[] = [];
 
   lineSeats?: LineSeat[] = [];
 }

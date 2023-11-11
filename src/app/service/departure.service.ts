@@ -13,4 +13,10 @@ export class DepartureService {
   getDepartureList(): Observable<any> {
     return this.httpClient.get<any>(`${this.basePath}`);
   }
+
+  getDepartureBySlug(slug: string): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.basePath}` + '/' + encodeURIComponent(slug)
+    );
+  }
 }

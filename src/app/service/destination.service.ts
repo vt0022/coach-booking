@@ -15,4 +15,10 @@ export class DestinationService {
       `${this.basePath}` + '/departures/' + encodeURIComponent(slug)
     );
   }
+
+  getDestinationBySlug(slug: string): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.basePath}` + '/' + encodeURIComponent(slug)
+    );
+  }
 }

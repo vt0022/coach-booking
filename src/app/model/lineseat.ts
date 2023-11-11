@@ -1,8 +1,8 @@
-import { CompositeKey } from './compositekey';
+import { LineSeatKey } from './lineseatkey';
 import { Seat } from './seat';
 
 export class LineSeat {
-  compositeKey!: CompositeKey;
+  lineSeatKey!: LineSeatKey;
   _available?: boolean;
   seat?: Seat;
 }
