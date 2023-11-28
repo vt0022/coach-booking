@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PickUpTypeService {
-  private basePath = 'http://localhost:8080/api/v1/pickuptypes';
+  private basePath = environment.apiUrl + '/pickuptypes';
 
   constructor(private httpClient: HttpClient) {}
 

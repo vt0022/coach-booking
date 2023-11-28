@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BookingComponent } from './booking/booking.component';
@@ -20,6 +20,8 @@ import {
   MatRadioModule,
 } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
+import { InterceptorService } from './service/interceptor.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [AppComponent, BookingComponent],
@@ -42,14 +44,22 @@ import { MatIconModule } from '@angular/material/icon';
     MatRadioModule,
     MatCheckboxModule,
     MatIconModule,
+    NgxSpinnerModule,
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {
       provide: MAT_RADIO_DEFAULT_OPTIONS,
       useValue: { color: 'primary' },
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true,
+    },
     DatePipe,
   ],
   bootstrap: [AppComponent],
 })
+
 export class AppModule {}

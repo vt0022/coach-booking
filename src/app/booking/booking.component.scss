@@ -299,12 +299,12 @@ mat-form-field {
 
 .completion {
   font-size: x-large;
-  color: rgb(27, 187, 126) ;
+  color: rgb(27, 187, 126);
 }
 
 .completion-error {
   font-size: x-large;
-  color: rgb(235, 64, 34) ;
+  color: rgb(235, 64, 34);
 }
 
 .complete-icon {
@@ -321,6 +321,40 @@ mat-form-field {
 }
 
 button.active {
-    background-color:#a3e4f3;
-    color:rgb(5, 182, 182);
+  background-color: #a3e4f3;
+  color: rgb(5, 182, 182);
+}
+
+.main {
+  background-color: rgb(255, 255, 255);
+  z-index: 0;
+}
+
+.header-banner-container {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.header-banner {
+  flex: none;
+}
+
+.banner-container {
+  width: 95%;
+  height: 250px;
+  background-color: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(172, 171, 171, 0.5);
+}
+
+.banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

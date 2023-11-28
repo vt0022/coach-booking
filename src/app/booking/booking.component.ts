@@ -38,6 +38,7 @@ import { LineSeat } from '../model/lineseat';
 import { Passenger } from '../model/passenger';
 import { ResponseModel } from '../model/response';
 import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking',
@@ -151,6 +152,7 @@ export class BookingComponent implements OnInit {
   ////////////////////////////////////////////////////////////////
   constructor(
     private _formBuilder: FormBuilder,
+    private router: Router,
     breakpointObserver: BreakpointObserver,
     private departureService: DepartureService,
     private destinationService: DestinationService,
@@ -352,6 +354,13 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  // Xoá thông tin
+  onResetForm() {
+    // Dùng phương thức của form group
+    this.secondFormGroup.reset();
+    // Đặt lại giá trị mặc định
+    this.setDefaultField();
+  }
   // Chọn ghế đi
   onSelectSeat(seat: Seat, lineSeat: LineSeat) {
     // Đã chọn ghế đó rồi thì loại bỏ ghế đó ra (click lần 2)
@@ -518,6 +527,9 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  onReturnHome() {
+    this.router.navigate(['/']);
+  }
   ///////////////////////// Hàm phụ trợ //////////////////////////////
   //////////////////////////////////////////////////////////////////////
 
@@ -665,6 +677,11 @@ export class BookingComponent implements OnInit {
         ?.get('passengerAge')
         ?.setValue('default');
     }
+  }
+
+  // Check form có hợp lệ không
+  isFormValid() {
+    return this.secondFormGroup.valid;
   }
 
   // Lưu lại danh sách hành khách

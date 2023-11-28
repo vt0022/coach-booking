@@ -8,6 +8,11 @@ const routes: Routes = [
     path: 'booking',
     component: BookingComponent,
   },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule)
+  },
   { path: '', redirectTo: 'booking', pathMatch: 'full' },
 ];
 

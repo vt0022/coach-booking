@@ -1,260 +1,178 @@
-<div class="container">
-    <mat-stepper [linear]="true" #stepper class="booking-stepper" [orientation]="(stepperOrientation | async)!"
-        [linear]="true">
-        <mat-step [stepControl]="firstFormGroup" label="Chọn nơi đi, nơi đến">
-            <form [formGroup]="firstFormGroup">
-                <div class="select-row">
-                    <div class="select-column">
-                        <h4 class="select-label">Chọn điểm đi:</h4>
-                        <mat-form-field>
-                            <mat-icon class="select-icon" matSuffix>place</mat-icon>
-                            <mat-select required formControlName="selectedDeparture"
-                                (selectionChange)="onSelectDeparture()">
-                                <mat-option *ngFor="let departure of departureList" [value]="departure">
-                                    {{departure.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+<div class="main">
+    <header class="header-banner-container">
+        <img class="header-banner" src="../assets/images/header-banner.png" alt="Header banner">
+    </header>
 
-                    <div class="select-column">
-                        <h4 class="select-label">Chọn điểm đến:</h4>
-                        <mat-form-field>
-                            <mat-icon class="select-icon" matSuffix>place</mat-icon>
-                            <mat-select required formControlName="selectedDestination"
-                                (selectionChange)="onSelectDestination()">
-                                <mat-option *ngFor="let destination of destinationList" [value]="destination">
-                                    {{destination.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+    <div class="banner-container">
+        <img class="banner" src="../assets/images/banner.jpg" alt="Banner">
+    </div>
 
-                    <div class="select-column">
-                        <h4 class="select-label">Số lượng người đi:</h4>
-                        <mat-form-field>
-                            <mat-icon class="select-icon" matSuffix>expand_more</mat-icon>
-                            <mat-select required formControlName="selectedQuantity"
-                                (selectionChange)="onSelectQuantity()">
-                                <mat-option *ngFor="let quantity of [1, 2, 3, 4, 5]" [value]="quantity">
-                                    {{ quantity }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="select-radio">
-                    <mat-radio-group required formControlName="isOneWay" (change)="onSelectIsOneWay()">
-                        <mat-radio-button [value]="true" checked>Một chiều</mat-radio-button>
-                        <mat-radio-button [value]="false">Khứ hồi</mat-radio-button>
-                    </mat-radio-group>
-                </div>
-
-                <ng-container *ngIf="isOneWay; else twoWayDates">
-                    <div class="date-row">
-                        <h4 class="select-label">{{lineInfo}}</h4>
-                        <div class="date-container">
-                            <button mat-button matStepperNext *ngFor="let date of dateList"
-                                (click)="onClickDate(date)">{{
-                                date | date:'dd-MM-yyyy' }}</button>
-                        </div>
-                    </div>
-                </ng-container>
-                <ng-template #twoWayDates>
-                    <div class="date-row">
-                        <h4 class="select-label">{{lineInfo}}</h4>
-                        <div class="date-container">
-                            <button mat-button *ngFor="let date of dateList" [class.active]="selectedDate === date"
-                                (click)="onClickDate(date)">{{
-                                date | date:'dd-MM-yyyy' }}</button>
-                        </div>
-                    </div>
-
-                    <div class="date-row">
-                        <h4 class="select-label">{{lineInfoBack}}</h4>
-                        <div class="date-container">
-                            <button mat-button matStepperNext *ngFor="let date of dateList"
-                                (click)="onClickDateBack(date)">{{
-                                date | date:'dd-MM-yyyy' }}</button>
-                        </div>
-                    </div>
-                </ng-template>
-
-            </form>
-        </mat-step>
-
-        <mat-step [stepControl]="secondFormGroup" label="Thông tin khách hàng">
-            <form [formGroup]="secondFormGroup">
-                <div formArrayName="passengerArray">
-                    <div class="info-row"
-                        *ngFor="let i of [0, 1, 2, 3, 4, 5].slice(0, selectedQuantity); let $index = index"
-                        [formGroupName]="$index">
-                        <div class="info-column">
-                            <h4 class="select-label">Họ tên *</h4>
+    <div class="container">
+        <mat-stepper [linear]="true" #stepper class="booking-stepper" [orientation]="(stepperOrientation | async)!"
+            [linear]="true">
+            <mat-step [stepControl]="firstFormGroup" label="Chọn nơi đi, nơi đến">
+                <form [formGroup]="firstFormGroup">
+                    <div class="select-row">
+                        <div class="select-column">
+                            <h4 class="select-label">Chọn điểm đi:</h4>
                             <mat-form-field>
-                                <input matInput formControlName="passengerName" placeholder="Nguyễn Văn A" type="text"
-                                    required>
+                                <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                                <mat-select required formControlName="selectedDeparture"
+                                    (selectionChange)="onSelectDeparture()">
+                                    <mat-option *ngFor="let departure of departureList" [value]="departure">
+                                        {{departure.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="info-column">
-                            <h4 class="select-label">Năm sinh *</h4>
+
+                        <div class="select-column">
+                            <h4 class="select-label">Chọn điểm đến:</h4>
                             <mat-form-field>
-                                <input matInput formControlName="passengerAge" placeholder="2000" type="text" required>
+                                <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                                <mat-select required formControlName="selectedDestination"
+                                    (selectionChange)="onSelectDestination()">
+                                    <mat-option *ngFor="let destination of destinationList" [value]="destination">
+                                        {{destination.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="info-column"
-                            *ngIf="(selectedQuantity >= 3 && $index === 1) || ($index === 0); else phoneShowUp">
-                            <h4 class="select-label">Số điện thoại *</h4>
+
+                        <div class="select-column">
+                            <h4 class="select-label">Số lượng người đi:</h4>
                             <mat-form-field>
-                                <input matInput formControlName="passengerPhone" placeholder="0397854125" type="text"
-                                    required>
+                                <mat-icon class="select-icon" matSuffix>expand_more</mat-icon>
+                                <mat-select required formControlName="selectedQuantity"
+                                    (selectionChange)="onSelectQuantity()">
+                                    <mat-option *ngFor="let quantity of [1, 2, 3, 4, 5]" [value]="quantity">
+                                        {{ quantity }}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
-                        <ng-template #phoneShowUp>
-                            <div class="info-column hide-input">
+                    </div>
+
+                    <div class="select-radio">
+                        <mat-radio-group required formControlName="isOneWay" (change)="onSelectIsOneWay()">
+                            <mat-radio-button [value]="true" checked>Một chiều</mat-radio-button>
+                            <mat-radio-button [value]="false">Khứ hồi</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <ng-container *ngIf="isOneWay; else twoWayDates">
+                        <div class="date-row">
+                            <h4 class="select-label">{{lineInfo}}</h4>
+                            <div class="date-container">
+                                <button mat-button matStepperNext *ngFor="let date of dateList"
+                                    (click)="onClickDate(date)">{{
+                                    date | date:'dd-MM-yyyy' }}</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #twoWayDates>
+                        <div class="date-row">
+                            <h4 class="select-label">{{lineInfo}}</h4>
+                            <div class="date-container">
+                                <button mat-button *ngFor="let date of dateList" [class.active]="selectedDate === date"
+                                    (click)="onClickDate(date)">{{
+                                    date | date:'dd-MM-yyyy' }}</button>
+                            </div>
+                        </div>
+
+                        <div class="date-row">
+                            <h4 class="select-label">{{lineInfoBack}}</h4>
+                            <div class="date-container">
+                                <button mat-button matStepperNext *ngFor="let date of dateList"
+                                    (click)="onClickDateBack(date)">{{
+                                    date | date:'dd-MM-yyyy' }}</button>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="secondFormGroup" label="Thông tin khách hàng">
+                <form [formGroup]="secondFormGroup">
+                    <div formArrayName="passengerArray">
+                        <div class="info-row"
+                            *ngFor="let i of [0, 1, 2, 3, 4, 5].slice(0, selectedQuantity); let $index = index"
+                            [formGroupName]="$index">
+                            <div class="info-column">
+                                <h4 class="select-label">Họ tên *</h4>
+                                <mat-form-field>
+                                    <input matInput formControlName="passengerName" placeholder="Nguyễn Văn A"
+                                        type="text" required>
+                                </mat-form-field>
+                            </div>
+                            <div class="info-column">
+                                <h4 class="select-label">Năm sinh *</h4>
+                                <mat-form-field>
+                                    <input matInput formControlName="passengerAge" placeholder="2000" type="text"
+                                        required>
+                                </mat-form-field>
+                            </div>
+                            <div class="info-column"
+                                *ngIf="(selectedQuantity >= 3 && $index === 1) || ($index === 0); else phoneShowUp">
                                 <h4 class="select-label">Số điện thoại *</h4>
                                 <mat-form-field>
                                     <input matInput formControlName="passengerPhone" placeholder="0397854125"
                                         type="text" required>
                                 </mat-form-field>
                             </div>
-                        </ng-template>
+                            <ng-template #phoneShowUp>
+                                <div class="info-column hide-input">
+                                    <h4 class="select-label">Số điện thoại *</h4>
+                                    <mat-form-field>
+                                        <input matInput formControlName="passengerPhone" placeholder="0397854125"
+                                            type="text" required>
+                                    </mat-form-field>
+                                </div>
+                            </ng-template>
 
-                        <div class="info-column" *ngIf="$index === 0; else emailShowUp">
-                            <h4 class="select-label">Email *</h4>
-                            <mat-form-field>
-                                <input matInput formControlName="passengerMail" placeholder="a@gmail.com" type="email"
-                                    required>
-                            </mat-form-field>
-                        </div>
-                        <ng-template #emailShowUp>
-                            <div class="info-column hide-input">
+                            <div class="info-column" *ngIf="$index === 0; else emailShowUp">
                                 <h4 class="select-label">Email *</h4>
                                 <mat-form-field>
                                     <input matInput formControlName="passengerMail" placeholder="a@gmail.com"
                                         type="email" required>
                                 </mat-form-field>
                             </div>
-                        </ng-template>
+                            <ng-template #emailShowUp>
+                                <div class="info-column hide-input">
+                                    <h4 class="select-label">Email *</h4>
+                                    <mat-form-field>
+                                        <input matInput formControlName="passengerMail" placeholder="a@gmail.com"
+                                            type="email" required>
+                                    </mat-form-field>
+                                </div>
+                            </ng-template>
+                        </div>
                     </div>
-                </div>
 
-                <div class="info-action">
-                    <mat-checkbox formControlName="acceptTerms" required>Chấp nhận điều khoản</mat-checkbox>
-                    <a href="" style="margin-left: 10px">>>Xem điều khoản</a>
-                    <button mat-raised-button color="primary" matStepperPrevious>Quay lại</button>
-                    <button mat-raised-button color="primary">Xoá thông tin</button>
-                    <button mat-raised-button color="primary" matStepperNext (click)="onClickToSeatStep()">Tiếp
-                        tục</button>
-                </div>
-            </form>
-        </mat-step>
+                    <div class="info-action">
+                        <mat-checkbox formControlName="acceptTerms" required>Chấp nhận điều khoản</mat-checkbox>
+                        <a href="" style="margin-left: 10px">>>Xem điều khoản</a>
+                        <button mat-raised-button color="primary" matStepperPrevious>Quay lại</button>
+                        <button mat-raised-button color="primary" (click)="onResetForm()">Xoá thông tin</button>
+                        <button [disabled]="!isFormValid()" mat-raised-button color="primary" matStepperNext (click)="onClickToSeatStep()">Tiếp
+                            tục</button>
+                    </div>
+                </form>
+            </mat-step>
 
-        <mat-step [stepControl]="thirdFormGroup" [completed]="isStepThreeCompleted" label="Chọn ghế">
-            <form [formGroup]="thirdFormGroup">
-                <div class="info-seat-grid">
-                    <div class="input-column">
-                        <div style="font-size: large; font-weight: bold; margin-bottom: 20px;">Từ
-                            {{selectedDeparture?.name}} đến {{selectedDestination?.name}}
-                            ngày {{selectedDate | date:'dd-MM-yyyy'}}</div>
-                        <div class="select-column">
-                            <h4 class="select-label">Chọn loại ghế</h4>
-                            <mat-form-field>
-                                <mat-select required formControlName="selectedCoachType"
-                                    (selectionChange)="onSelectCoachType()">
-                                    <mat-option *ngFor="let coachType of coachTypeList" [value]="coachType">
-                                        {{coachType.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="select-column">
-                            <h4 class="select-label">Chọn chuyến xe</h4>
-                            <mat-form-field>
-                                <mat-select required formControlName="selectedLine" (selectionChange)="onSelectLine()">
-                                    <mat-option *ngFor="let line of lineList" [value]="line">
-                                        {{formatTime(line.departureTime)}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="select-pickup-type">
-                            <h4 class="select-label">Nơi lên xe</h4>
-                            <div class="select-radio-3">
-                                <mat-radio-group required formControlName="selectedPickUpType"
-                                    (change)="onSelectPickUpType()">
-                                    <mat-radio-button *ngFor="let pickUpType of pickUpTypeList"
-                                        [value]="pickUpType">{{pickUpType.name}}</mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                        </div>
-
-                        <div class="select-column">
-                            <mat-form-field>
-                                <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
-                                <mat-select required formControlName="selectedPickUp"
-                                    (selectionChange)="onSelectPickUp()">
-                                    <mat-option *ngFor="let pickUp of pickUpList" [value]="pickUp">
-                                        {{pickUp?.location}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="select-pickup-type">
-                            <h4 class="select-label">Nơi xuống xe</h4>
-                            <div class="select-radio-3">
-                                <mat-radio-group required formControlName="selectedDropOffType"
-                                    (change)="onSelectDropOffType()">
-                                    <mat-radio-button *ngFor="let dropOffType of dropOffTypeList"
-                                        [value]="dropOffType">{{dropOffType.name}}</mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                        </div>
-
-                        <div *ngIf="selectedDropOffType?.name === 'Xuống tận nhà'">
-                            <h4 class="select-label">Số nhà</h4>
-                            <mat-form-field>
-                                <input matInput formControlName="houseNumber" placeholder="Vd: số 10">
-                            </mat-form-field>
-                        </div>
-
-                        <div class="select-column">
-                            <mat-form-field>
-                                <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
-                                <mat-select required formControlName="selectedDropOff"
-                                    (selectionChange)="onSelectDropOff()">
-                                    <mat-option *ngFor="let dropOff of dropOffList" [value]="dropOff">
-                                        {{dropOff?.location}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div>
-                            <h4 class="select-label">Yêu cầu</h4>
-                            <mat-form-field>
-                                <input matInput formControlName="note" placeholder="Vd: có trẻ em">
-                            </mat-form-field>
-                            
-                        </div>
-
-                        <ng-container *ngIf="!isOneWay">
-                            <br>
-                            <hr>
-                            <hr>
-                            <br>
+            <mat-step [stepControl]="thirdFormGroup" [completed]="isStepThreeCompleted" label="Chọn ghế">
+                <form [formGroup]="thirdFormGroup">
+                    <div class="info-seat-grid">
+                        <div class="input-column">
                             <div style="font-size: large; font-weight: bold; margin-bottom: 20px;">Từ
-                                {{selectedDestination?.name}} về {{selectedDeparture?.name}}
-                                ngày {{selectedDateBack | date:'dd-MM-yyyy'}}</div>
+                                {{selectedDeparture?.name}} đến {{selectedDestination?.name}}
+                                ngày {{selectedDate | date:'dd-MM-yyyy'}}</div>
                             <div class="select-column">
                                 <h4 class="select-label">Chọn loại ghế</h4>
                                 <mat-form-field>
-                                    <mat-select required formControlName="selectedCoachTypeBack"
-                                        (selectionChange)="onSelectCoachTypeBack()">
+                                    <mat-select required formControlName="selectedCoachType"
+                                        (selectionChange)="onSelectCoachType()">
                                         <mat-option *ngFor="let coachType of coachTypeList" [value]="coachType">
                                             {{coachType.name}}
                                         </mat-option>
@@ -265,9 +183,9 @@
                             <div class="select-column">
                                 <h4 class="select-label">Chọn chuyến xe</h4>
                                 <mat-form-field>
-                                    <mat-select required formControlName="selectedLineBack"
-                                        (selectionChange)="onSelectLineBack()">
-                                        <mat-option *ngFor="let line of lineListBack" [value]="line">
+                                    <mat-select required formControlName="selectedLine"
+                                        (selectionChange)="onSelectLine()">
+                                        <mat-option *ngFor="let line of lineList" [value]="line">
                                             {{formatTime(line.departureTime)}}
                                         </mat-option>
                                     </mat-select>
@@ -277,8 +195,8 @@
                             <div class="select-pickup-type">
                                 <h4 class="select-label">Nơi lên xe</h4>
                                 <div class="select-radio-3">
-                                    <mat-radio-group required formControlName="selectedPickUpTypeBack"
-                                        (change)="onSelectPickUpTypeBack()">
+                                    <mat-radio-group required formControlName="selectedPickUpType"
+                                        (change)="onSelectPickUpType()">
                                         <mat-radio-button *ngFor="let pickUpType of pickUpTypeList"
                                             [value]="pickUpType">{{pickUpType.name}}</mat-radio-button>
                                     </mat-radio-group>
@@ -288,9 +206,9 @@
                             <div class="select-column">
                                 <mat-form-field>
                                     <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
-                                    <mat-select required formControlName="selectedPickUpBack"
-                                        (selectionChange)="onSelectPickUpBack()">
-                                        <mat-option *ngFor="let pickUp of pickUpListBack" [value]="pickUp">
+                                    <mat-select required formControlName="selectedPickUp"
+                                        (selectionChange)="onSelectPickUp()">
+                                        <mat-option *ngFor="let pickUp of pickUpList" [value]="pickUp">
                                             {{pickUp?.location}}
                                         </mat-option>
                                     </mat-select>
@@ -300,258 +218,131 @@
                             <div class="select-pickup-type">
                                 <h4 class="select-label">Nơi xuống xe</h4>
                                 <div class="select-radio-3">
-                                    <mat-radio-group required formControlName="selectedDropOffTypeBack"
-                                        (change)="onSelectDropOffTypeBack()">
+                                    <mat-radio-group required formControlName="selectedDropOffType"
+                                        (change)="onSelectDropOffType()">
                                         <mat-radio-button *ngFor="let dropOffType of dropOffTypeList"
                                             [value]="dropOffType">{{dropOffType.name}}</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
                             </div>
 
-                            <div *ngIf="selectedDropOffTypeBack?.name === 'Xuống tận nhà'">
+                            <div *ngIf="selectedDropOffType?.name === 'Xuống tận nhà'">
                                 <h4 class="select-label">Số nhà</h4>
                                 <mat-form-field>
-                                    <input matInput formControlName="houseNumberBack" placeholder="Vd: số 10">
+                                    <input matInput formControlName="houseNumber" placeholder="Vd: số 10">
                                 </mat-form-field>
                             </div>
 
                             <div class="select-column">
                                 <mat-form-field>
                                     <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
-                                    <mat-select required formControlName="selectedDropOffBack"
-                                        (selectionChange)="onSelectDropOffBack()">
-                                        <mat-option *ngFor="let dropOff of dropOffListBack" [value]="dropOff">
+                                    <mat-select required formControlName="selectedDropOff"
+                                        (selectionChange)="onSelectDropOff()">
+                                        <mat-option *ngFor="let dropOff of dropOffList" [value]="dropOff">
                                             {{dropOff?.location}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                        </ng-container>
-                    </div>
 
-                    <ng-template #displaySeat>
-                        <div class="display-seat-column">
-                            <div class="display-coach-type" style="font-size: large;" *ngIf="!isOneWay">XE ĐI</div>
-                            <div class="display-coach-type">Giường 34</div>
-                            <div class="display-door">
-                                <div class="driver">Lái xe</div>
-                                <div class="door">Cửa lên</div>
+                            <div>
+                                <h4 class="select-label">Yêu cầu</h4>
+                                <mat-form-field>
+                                    <input matInput formControlName="note" placeholder="Vd: có trẻ em">
+                                </mat-form-field>
+
                             </div>
 
-                            <div class="display-real-seat" [style.grid-template-columns]="'repeat(4, 1fr)'"
-                                style="height: 50px;">
-                                <div class="seat">1</div>
-                                <div class="seat">2</div>
-                                <div class="fake-seat">&nbsp;</div>
-                                <div class="seat">3</div>
-                                <div class="seat">4</div>
-                                <div class="seat">5</div>
-                                <div class="fake-seat">&nbsp;</div>
-                                <div class="seat">7</div>
-                            </div>
-                        </div>
-                    </ng-template>
-
-                    <div class="display-seat-column" *ngIf="selectedCoachType && selectedLine; else displaySeat">
-                        <div class="display-coach-type" style="font-size: large;" *ngIf="!isOneWay">XE ĐI</div>
-                        <div class="display-coach-type">{{selectedCoachType.name}}</div>
-                        <div class="display-door">
-                            <div class="driver">Lái xe</div>
-                            <div class="door">Cửa lên</div>
-                        </div>
-
-                        <ng-container *ngIf="isDoubleDecker; else displaySingleDecker">
-                            <br>
-                            <div class="display-decker">Tầng dưới</div>
-
-                            <div class="real-seat-container">
-                                <div class="display-real-seat"
-                                    [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
-
-                                    <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
-                                        <ng-container *ngIf="lineSeat.seat?.decker === 1">
-                                            <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
-                                                <div class="fake-seat">&nbsp;</div>
-                                            </ng-container>
-                                            <ng-template #displayRealSeat>
-                                                <ng-container *ngIf="lineSeat._available; else displayUnavailableSeat">
-                                                    <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
-                                                        (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
-                                                        {{lineSeat.seat?.position}}
-                                                    </div>
-                                                </ng-container>
-                                                <ng-template #displayUnavailableSeat>
-                                                    <div class="seat unavail-seat">
-                                                        {{lineSeat.seat?.position}}</div>
-                                                </ng-template>
-                                            </ng-template>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="display-decker">Tầng trên</div>
-
-                            <div class="real-seat-container">
-                                <div class="display-real-seat"
-                                    [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
-
-                                    <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
-                                        <ng-container *ngIf="lineSeat.seat?.decker === 2">
-                                            <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
-                                                <div class="fake-seat">&nbsp;</div>
-                                            </ng-container>
-                                            <ng-template #displayRealSeat>
-                                                <ng-container *ngIf="lineSeat._available; else displayUnavailableSeat">
-                                                    <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
-                                                        (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
-                                                        {{lineSeat.seat?.position}}
-                                                    </div>
-                                                </ng-container>
-                                                <ng-template #displayUnavailableSeat>
-                                                    <div class="seat unavail-seat">
-                                                        {{lineSeat.seat?.position}}</div>
-                                                </ng-template>
-                                            </ng-template>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                            </div>
-
-                        </ng-container>
-
-                        <ng-template #displaySingleDecker>
-
-                            <div class="real-seat-container">
-                                <div class="display-real-seat"
-                                    [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
-
-                                    <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
-                                        <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
-                                            <div class="fake-seat">&nbsp;</div>
-                                        </ng-container>
-                                        <ng-template #displayRealSeat>
-                                            <ng-container *ngIf="lineSeat._available; else displayUnavailableSeat">
-                                                <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
-                                                    (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
-                                                    {{lineSeat.seat?.position}}
-                                                </div>
-                                            </ng-container>
-                                            <ng-template #displayUnavailableSeat>
-                                                <div class="seat unavail-seat">
-                                                    {{lineSeat.seat?.position}}</div>
-                                            </ng-template>
-                                        </ng-template>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </ng-template>
-
-                        <ng-container *ngIf="!isOneWay">
-                            <hr>
-                            <hr>
-                            <ng-container *ngIf="selectedCoachTypeBack && selectedLineBack; else displaySeatBack">
-                                <div class="display-coach-type" style="font-size: large;">XE VỀ</div>
-                                <div class="display-coach-type">{{selectedCoachTypeBack.name}}</div>
-                                <div class="display-door">
-                                    <div class="driver">Lái xe</div>
-                                    <div class="door">Cửa lên</div>
+                            <ng-container *ngIf="!isOneWay">
+                                <br>
+                                <hr>
+                                <hr>
+                                <br>
+                                <div style="font-size: large; font-weight: bold; margin-bottom: 20px;">Từ
+                                    {{selectedDestination?.name}} về {{selectedDeparture?.name}}
+                                    ngày {{selectedDateBack | date:'dd-MM-yyyy'}}</div>
+                                <div class="select-column">
+                                    <h4 class="select-label">Chọn loại ghế</h4>
+                                    <mat-form-field>
+                                        <mat-select required formControlName="selectedCoachTypeBack"
+                                            (selectionChange)="onSelectCoachTypeBack()">
+                                            <mat-option *ngFor="let coachType of coachTypeList" [value]="coachType">
+                                                {{coachType.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
 
-                                <ng-container *ngIf="isDoubleDeckerBack; else displaySingleDeckerBack">
-                                    <br>
-                                    <div class="display-decker">Tầng dưới</div>
+                                <div class="select-column">
+                                    <h4 class="select-label">Chọn chuyến xe</h4>
+                                    <mat-form-field>
+                                        <mat-select required formControlName="selectedLineBack"
+                                            (selectionChange)="onSelectLineBack()">
+                                            <mat-option *ngFor="let line of lineListBack" [value]="line">
+                                                {{formatTime(line.departureTime)}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                                    <div class="real-seat-container">
-                                        <div class="display-real-seat"
-                                            [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
-                                            <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
-                                                <ng-container *ngIf="lineSeat.seat?.decker === 1">
-                                                    <ng-container
-                                                        *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
-                                                        <div class="fake-seat">&nbsp;</div>
-                                                    </ng-container>
-                                                    <ng-template #displayRealSeatBack>
-                                                        <ng-container
-                                                            *ngIf="lineSeat._available; else displayUnavailableSeatBack">
-                                                            <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
-                                                                (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
-                                                                {{lineSeat.seat?.position}}
-                                                            </div>
-                                                        </ng-container>
-                                                        <ng-template #displayUnavailableSeatBack>
-                                                            <div class="seat unavail-seat">
-                                                                {{lineSeat.seat?.position}}</div>
-                                                        </ng-template>
-                                                    </ng-template>
-                                                </ng-container>
-                                            </ng-container>
-                                        </div>
+                                <div class="select-pickup-type">
+                                    <h4 class="select-label">Nơi lên xe</h4>
+                                    <div class="select-radio-3">
+                                        <mat-radio-group required formControlName="selectedPickUpTypeBack"
+                                            (change)="onSelectPickUpTypeBack()">
+                                            <mat-radio-button *ngFor="let pickUpType of pickUpTypeList"
+                                                [value]="pickUpType">{{pickUpType.name}}</mat-radio-button>
+                                        </mat-radio-group>
                                     </div>
+                                </div>
 
-                                    <br>
-                                    <div class="display-decker">Tầng trên</div>
+                                <div class="select-column">
+                                    <mat-form-field>
+                                        <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
+                                        <mat-select required formControlName="selectedPickUpBack"
+                                            (selectionChange)="onSelectPickUpBack()">
+                                            <mat-option *ngFor="let pickUp of pickUpListBack" [value]="pickUp">
+                                                {{pickUp?.location}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                                    <div class="real-seat-container">
-                                        <div class="display-real-seat"
-                                            [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
-
-                                            <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
-                                                <ng-container *ngIf="lineSeat.seat?.decker === 2">
-                                                    <ng-container
-                                                        *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
-                                                        <div class="fake-seat">&nbsp;</div>
-                                                    </ng-container>
-                                                    <ng-template #displayRealSeatBack>
-                                                        <ng-container
-                                                            *ngIf="lineSeat._available; else displayUnavailableSeatBack">
-                                                            <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
-                                                                (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
-                                                                {{lineSeat.seat?.position}}
-                                                            </div>
-                                                        </ng-container>
-                                                        <ng-template #displayUnavailableSeatBack>
-                                                            <div class="seat unavail-seat">
-                                                                {{lineSeat.seat?.position}}</div>
-                                                        </ng-template>
-                                                    </ng-template>
-                                                </ng-container>
-                                            </ng-container>
-                                        </div>
+                                <div class="select-pickup-type">
+                                    <h4 class="select-label">Nơi xuống xe</h4>
+                                    <div class="select-radio-3">
+                                        <mat-radio-group required formControlName="selectedDropOffTypeBack"
+                                            (change)="onSelectDropOffTypeBack()">
+                                            <mat-radio-button *ngFor="let dropOffType of dropOffTypeList"
+                                                [value]="dropOffType">{{dropOffType.name}}</mat-radio-button>
+                                        </mat-radio-group>
                                     </div>
-                                </ng-container>
+                                </div>
 
-                                <ng-template #displaySingleDeckerBack>
+                                <div *ngIf="selectedDropOffTypeBack?.name === 'Xuống tận nhà'">
+                                    <h4 class="select-label">Số nhà</h4>
+                                    <mat-form-field>
+                                        <input matInput formControlName="houseNumberBack" placeholder="Vd: số 10">
+                                    </mat-form-field>
+                                </div>
 
-                                    <div class="real-seat-container">
-                                        <div class="display-real-seat"
-                                            [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
-
-                                            <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
-                                                <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
-                                                    <div class="fake-seat">&nbsp;</div>
-                                                </ng-container>
-                                                <ng-template #displayRealSeatBack>
-                                                    <ng-container
-                                                        *ngIf="lineSeat._available; else displayUnavailableSeatBack">
-                                                        <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
-                                                            (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
-                                                            {{lineSeat.seat?.position}}
-                                                        </div>
-                                                    </ng-container>
-                                                    <ng-template #displayUnavailableSeatBack>
-                                                        <div class="seat unavail-seat">
-                                                            {{lineSeat.seat?.position}}</div>
-                                                    </ng-template>
-                                                </ng-template>
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                </ng-template>
+                                <div class="select-column">
+                                    <mat-form-field>
+                                        <mat-icon class="select-icon-v2" matSuffix>place</mat-icon>
+                                        <mat-select required formControlName="selectedDropOffBack"
+                                            (selectionChange)="onSelectDropOffBack()">
+                                            <mat-option *ngFor="let dropOff of dropOffListBack" [value]="dropOff">
+                                                {{dropOff?.location}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                             </ng-container>
-                            <ng-template #displaySeatBack>
-                                <div class="display-coach-type" style="font-size: large;">XE VỀ</div>
+                        </div>
+
+                        <ng-template #displaySeat>
+                            <div class="display-seat-column">
+                                <div class="display-coach-type" style="font-size: large;" *ngIf="!isOneWay">XE ĐI</div>
                                 <div class="display-coach-type">Giường 34</div>
                                 <div class="display-door">
                                     <div class="driver">Lái xe</div>
@@ -569,178 +360,414 @@
                                     <div class="fake-seat">&nbsp;</div>
                                     <div class="seat">7</div>
                                 </div>
-                            </ng-template>
-                        </ng-container>
-                    </div>
+                            </div>
+                        </ng-template>
 
-                    <div class="info-ticket">
-                        <div class="mini-header">
-                            <div>Thông tin</div>
-                            <hr>
-                        </div>
-                        <div class="info-main">
-                            <div class="info-line">
-                                <div class="label-left">Họ và tên</div>
-                                <div class="info-right">
-                                    {{secondFormGroup.controls['passengerArray'].controls[0].get('passengerName')?.value}}
-                                </div>
+                        <div class="display-seat-column" *ngIf="selectedCoachType && selectedLine; else displaySeat">
+                            <div class="display-coach-type" style="font-size: large;" *ngIf="!isOneWay">XE ĐI</div>
+                            <div class="display-coach-type">{{selectedCoachType.name}}</div>
+                            <div class="display-door">
+                                <div class="driver">Lái xe</div>
+                                <div class="door">Cửa lên</div>
                             </div>
-                        </div>
-                        <div class="info-main">
-                            <div class="info-line">
-                                <div class="label-left">Điện thoại</div>
-                                <div class="info-right">
-                                    {{secondFormGroup.controls['passengerArray'].controls[0].get('passengerPhone')?.value}}
+
+                            <ng-container *ngIf="isDoubleDecker; else displaySingleDecker">
+                                <br>
+                                <div class="display-decker">Tầng dưới</div>
+
+                                <div class="real-seat-container">
+                                    <div class="display-real-seat"
+                                        [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
+
+                                        <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
+                                            <ng-container *ngIf="lineSeat.seat?.decker === 1">
+                                                <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
+                                                    <div class="fake-seat">&nbsp;</div>
+                                                </ng-container>
+                                                <ng-template #displayRealSeat>
+                                                    <ng-container
+                                                        *ngIf="lineSeat._available; else displayUnavailableSeat">
+                                                        <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
+                                                            (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
+                                                            {{lineSeat.seat?.position}}
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-template #displayUnavailableSeat>
+                                                        <div class="seat unavail-seat">
+                                                            {{lineSeat.seat?.position}}</div>
+                                                    </ng-template>
+                                                </ng-template>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
                                 </div>
-                            </div>
-                            <ng-container *ngIf="!isOneWay">
-                                <div class="mini-header">
-                                    <hr>
-                                    <div>Lượt đi</div>
+
+                                <br>
+                                <div class="display-decker">Tầng trên</div>
+
+                                <div class="real-seat-container">
+                                    <div class="display-real-seat"
+                                        [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
+
+                                        <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
+                                            <ng-container *ngIf="lineSeat.seat?.decker === 2">
+                                                <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
+                                                    <div class="fake-seat">&nbsp;</div>
+                                                </ng-container>
+                                                <ng-template #displayRealSeat>
+                                                    <ng-container
+                                                        *ngIf="lineSeat._available; else displayUnavailableSeat">
+                                                        <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
+                                                            (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
+                                                            {{lineSeat.seat?.position}}
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-template #displayUnavailableSeat>
+                                                        <div class="seat unavail-seat">
+                                                            {{lineSeat.seat?.position}}</div>
+                                                    </ng-template>
+                                                </ng-template>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
                                 </div>
+
                             </ng-container>
-                            <div class="info-line">
-                                <div class="label-left">Điểm lên xe</div>
-                                <div class="info-right">{{selectedPickUp?.location}} - {{selectedDeparture?.name}}</div>
-                            </div>
 
-                            <div class="info-line">
-                                <div class="label-left">Loại ghế</div>
-                                <div class="info-right">{{selectedCoachType?.name}}</div>
-                            </div>
+                            <ng-template #displaySingleDecker>
 
-                            <div class="info-line">
-                                <div class="label-left">Chuyến</div>
-                                <div class="info-right">{{selectedDeparture?.name}} - {{selectedDestination?.name}}
+                                <div class="real-seat-container">
+                                    <div class="display-real-seat"
+                                        [style.grid-template-columns]="'repeat(' + seatColumnLayout + ', 1fr)'">
+
+                                        <ng-container *ngFor="let lineSeat of selectedLine.lineSeats">
+                                            <ng-container *ngIf="lineSeat.seat?._blank; else displayRealSeat">
+                                                <div class="fake-seat">&nbsp;</div>
+                                            </ng-container>
+                                            <ng-template #displayRealSeat>
+                                                <ng-container *ngIf="lineSeat._available; else displayUnavailableSeat">
+                                                    <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeats.includes(lineSeat.seat!)}"
+                                                        (click)="onSelectSeat(lineSeat.seat!, lineSeat)">
+                                                        {{lineSeat.seat?.position}}
+                                                    </div>
+                                                </ng-container>
+                                                <ng-template #displayUnavailableSeat>
+                                                    <div class="seat unavail-seat">
+                                                        {{lineSeat.seat?.position}}</div>
+                                                </ng-template>
+                                            </ng-template>
+                                        </ng-container>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="info-line">
-                                <div class="label-left">Thời gian</div>
-                                <div class="info-right" *ngIf="selectedDate && selectedLine">
-                                    {{formatTime(selectedLine.departureTime)}} ngày {{selectedDate
-                                    | date:'dd-MM-yyyy'}} (Giờ khởi hành
-                                    là giờ tính từ {{selectedDeparture?.name}})
-                                </div>
-                            </div>
-
-                            <div class="info-line">
-                                <div class="label-left">Số ghế</div>
-                                <div class="info-right">
-                                    <ng-container *ngFor="let seat of selectedSeats; let last = last">
-                                        {{ seat.position }}{{ !last ? ', ' : '' }}
-                                    </ng-container>
-                                </div>
-                            </div>
+                            </ng-template>
 
                             <ng-container *ngIf="!isOneWay">
-                                <div class="mini-header">
-                                    <hr>
-                                    <div>Lượt về</div>
+                                <hr>
+                                <hr>
+                                <ng-container *ngIf="selectedCoachTypeBack && selectedLineBack; else displaySeatBack">
+                                    <div class="display-coach-type" style="font-size: large;">XE VỀ</div>
+                                    <div class="display-coach-type">{{selectedCoachTypeBack.name}}</div>
+                                    <div class="display-door">
+                                        <div class="driver">Lái xe</div>
+                                        <div class="door">Cửa lên</div>
+                                    </div>
+
+                                    <ng-container *ngIf="isDoubleDeckerBack; else displaySingleDeckerBack">
+                                        <br>
+                                        <div class="display-decker">Tầng dưới</div>
+
+                                        <div class="real-seat-container">
+                                            <div class="display-real-seat"
+                                                [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
+                                                <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
+                                                    <ng-container *ngIf="lineSeat.seat?.decker === 1">
+                                                        <ng-container
+                                                            *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
+                                                            <div class="fake-seat">&nbsp;</div>
+                                                        </ng-container>
+                                                        <ng-template #displayRealSeatBack>
+                                                            <ng-container
+                                                                *ngIf="lineSeat._available; else displayUnavailableSeatBack">
+                                                                <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
+                                                                    (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
+                                                                    {{lineSeat.seat?.position}}
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-template #displayUnavailableSeatBack>
+                                                                <div class="seat unavail-seat">
+                                                                    {{lineSeat.seat?.position}}</div>
+                                                            </ng-template>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="display-decker">Tầng trên</div>
+
+                                        <div class="real-seat-container">
+                                            <div class="display-real-seat"
+                                                [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
+
+                                                <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
+                                                    <ng-container *ngIf="lineSeat.seat?.decker === 2">
+                                                        <ng-container
+                                                            *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
+                                                            <div class="fake-seat">&nbsp;</div>
+                                                        </ng-container>
+                                                        <ng-template #displayRealSeatBack>
+                                                            <ng-container
+                                                                *ngIf="lineSeat._available; else displayUnavailableSeatBack">
+                                                                <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
+                                                                    (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
+                                                                    {{lineSeat.seat?.position}}
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-template #displayUnavailableSeatBack>
+                                                                <div class="seat unavail-seat">
+                                                                    {{lineSeat.seat?.position}}</div>
+                                                            </ng-template>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-template #displaySingleDeckerBack>
+
+                                        <div class="real-seat-container">
+                                            <div class="display-real-seat"
+                                                [style.grid-template-columns]="'repeat(' + seatColumnLayoutBack + ', 1fr)'">
+
+                                                <ng-container *ngFor="let lineSeat of selectedLineBack.lineSeats">
+                                                    <ng-container
+                                                        *ngIf="lineSeat.seat?._blank; else displayRealSeatBack">
+                                                        <div class="fake-seat">&nbsp;</div>
+                                                    </ng-container>
+                                                    <ng-template #displayRealSeatBack>
+                                                        <ng-container
+                                                            *ngIf="lineSeat._available; else displayUnavailableSeatBack">
+                                                            <div [ngClass]="{'seat': true, 'main-selected-seat': selectedSeatsBack.includes(lineSeat.seat!)}"
+                                                                (click)="onSelectSeatBack(lineSeat.seat!, lineSeat)">
+                                                                {{lineSeat.seat?.position}}
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-template #displayUnavailableSeatBack>
+                                                            <div class="seat unavail-seat">
+                                                                {{lineSeat.seat?.position}}</div>
+                                                        </ng-template>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ng-container>
+                                <ng-template #displaySeatBack>
+                                    <div class="display-coach-type" style="font-size: large;">XE VỀ</div>
+                                    <div class="display-coach-type">Giường 34</div>
+                                    <div class="display-door">
+                                        <div class="driver">Lái xe</div>
+                                        <div class="door">Cửa lên</div>
+                                    </div>
+
+                                    <div class="display-real-seat" [style.grid-template-columns]="'repeat(4, 1fr)'"
+                                        style="height: 50px;">
+                                        <div class="seat">1</div>
+                                        <div class="seat">2</div>
+                                        <div class="fake-seat">&nbsp;</div>
+                                        <div class="seat">3</div>
+                                        <div class="seat">4</div>
+                                        <div class="seat">5</div>
+                                        <div class="fake-seat">&nbsp;</div>
+                                        <div class="seat">7</div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </div>
+
+                        <div class="info-ticket">
+                            <div class="mini-header">
+                                <div>Thông tin</div>
+                                <hr>
+                            </div>
+                            <div class="info-main">
+                                <div class="info-line">
+                                    <div class="label-left">Họ và tên</div>
+                                    <div class="info-right">
+                                        {{secondFormGroup.controls['passengerArray'].controls[0].get('passengerName')?.value}}
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="info-main">
+                                <div class="info-line">
+                                    <div class="label-left">Điện thoại</div>
+                                    <div class="info-right">
+                                        {{secondFormGroup.controls['passengerArray'].controls[0].get('passengerPhone')?.value}}
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="!isOneWay">
+                                    <div class="mini-header">
+                                        <hr>
+                                        <div>Lượt đi</div>
+                                    </div>
+                                </ng-container>
                                 <div class="info-line">
                                     <div class="label-left">Điểm lên xe</div>
-                                    <div class="info-right">{{selectedPickUpBack?.location}} -
-                                        {{selectedDestination?.name}}
+                                    <div class="info-right">{{selectedPickUp?.location}} - {{selectedDeparture?.name}}
                                     </div>
                                 </div>
 
                                 <div class="info-line">
                                     <div class="label-left">Loại ghế</div>
-                                    <div class="info-right">{{selectedCoachTypeBack?.name}}</div>
+                                    <div class="info-right">{{selectedCoachType?.name}}</div>
                                 </div>
 
                                 <div class="info-line">
                                     <div class="label-left">Chuyến</div>
-                                    <div class="info-right">{{selectedDestination?.name}} - {{selectedDeparture?.name}}
+                                    <div class="info-right">{{selectedDeparture?.name}} - {{selectedDestination?.name}}
                                     </div>
                                 </div>
 
                                 <div class="info-line">
                                     <div class="label-left">Thời gian</div>
-                                    <div class="info-right" *ngIf="selectedDateBack && selectedLineBack">
-                                        {{formatTime(selectedLineBack.departureTime)}} ngày {{selectedDateBack
+                                    <div class="info-right" *ngIf="selectedDate && selectedLine">
+                                        {{formatTime(selectedLine.departureTime)}} ngày {{selectedDate
                                         | date:'dd-MM-yyyy'}} (Giờ khởi hành
-                                        là giờ tính từ {{selectedDestination?.name}})
+                                        là giờ tính từ {{selectedDeparture?.name}})
                                     </div>
                                 </div>
 
                                 <div class="info-line">
                                     <div class="label-left">Số ghế</div>
                                     <div class="info-right">
-                                        <ng-container *ngFor="let seat of selectedSeatsBack; let last = last">
+                                        <ng-container *ngFor="let seat of selectedSeats; let last = last">
                                             {{ seat.position }}{{ !last ? ', ' : '' }}
                                         </ng-container>
                                     </div>
                                 </div>
-                                <ng-container *ngIf="!isOneWay">
-                                    <div class="mini-header" style="text-align: center; height: 0px;">
-                                        <hr>
-                                    </div>
-                                </ng-container>
-                            </ng-container>
 
-                            <div class="info-line">
-                                <div class="label-left">Chi phí</div>
-                                <div class="info-right">{{totalCost | number}}</div>
+                                <ng-container *ngIf="!isOneWay">
+                                    <div class="mini-header">
+                                        <hr>
+                                        <div>Lượt về</div>
+                                    </div>
+                                    <div class="info-line">
+                                        <div class="label-left">Điểm lên xe</div>
+                                        <div class="info-right">{{selectedPickUpBack?.location}} -
+                                            {{selectedDestination?.name}}
+                                        </div>
+                                    </div>
+
+                                    <div class="info-line">
+                                        <div class="label-left">Loại ghế</div>
+                                        <div class="info-right">{{selectedCoachTypeBack?.name}}</div>
+                                    </div>
+
+                                    <div class="info-line">
+                                        <div class="label-left">Chuyến</div>
+                                        <div class="info-right">{{selectedDestination?.name}} -
+                                            {{selectedDeparture?.name}}
+                                        </div>
+                                    </div>
+
+                                    <div class="info-line">
+                                        <div class="label-left">Thời gian</div>
+                                        <div class="info-right" *ngIf="selectedDateBack && selectedLineBack">
+                                            {{formatTime(selectedLineBack.departureTime)}} ngày {{selectedDateBack
+                                            | date:'dd-MM-yyyy'}} (Giờ khởi hành
+                                            là giờ tính từ {{selectedDestination?.name}})
+                                        </div>
+                                    </div>
+
+                                    <div class="info-line">
+                                        <div class="label-left">Số ghế</div>
+                                        <div class="info-right">
+                                            <ng-container *ngFor="let seat of selectedSeatsBack; let last = last">
+                                                {{ seat.position }}{{ !last ? ', ' : '' }}
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="!isOneWay">
+                                        <div class="mini-header" style="text-align: center; height: 0px;">
+                                            <hr>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+
+                                <div class="info-line">
+                                    <div class="label-left">Chi phí</div>
+                                    <div class="info-right">{{totalCost | number}}</div>
+                                </div>
+
+                                <div class="mini-footer">
+                                    <hr>
+                                    <div>(*) Chi phí đã bao gồm: VAT, bảo hiểm hành khách, dịch vụ Wifi, nước và khăn
+                                        lạnh
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button mat-raised-button color="primary" matStepperNext (click)="onClickBooking()">Đặt vé <span
+                                class="arrow">
+                                >
+                            </span>
+                        </button>
+                        <button mat-raised-button color="primary" matStepperPrevious>Trở lại</button>
+                        <button mat-raised-button color="primary">Huỷ</button>
+                    </div>
+
+                    <div class="info-seat-grid" style="margin-top: 20px;">
+                        <div class="instruction">
+                            <div>
+                                <div class="instruction-header">Ghi chú</div>
+                                <div>Click vào sơ đồ ghế để chọn/bỏ chọn ghế</div>
                             </div>
 
-                            <div class="mini-footer">
-                                <hr>
-                                <div>(*) Chi phí đã bao gồm: VAT, bảo hiểm hành khách, dịch vụ Wifi, nước và khăn
-                                    lạnh
+                            <div class="seat-instruction">
+                                <div class="seat-instruction-line">
+                                    <div class="avail-seat">A1</div>
+                                    <div>Ghế trống</div>
+                                </div>
+                                <div class="seat-instruction-line">
+                                    <div class="unavail-seat">A4</div>
+                                    <div>Ghế đã có khách</div>
+                                </div>
+                                <div class="seat-instruction-line">
+                                    <div class="selected-seat">A3</div>
+                                    <div>Ghế đã chọn</div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+                </form>
+                <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box"
+                    [fullScreen]="true">
+                    <p style="color: white"> Đang đặt vé... </p>
+                </ngx-spinner>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Hoàn thành</ng-template>
+                <div class="result">
+                    <mat-icon class="complete-icon">task_alt</mat-icon>
+                    <p class="completion-error" *ngIf="isError">{{noti}}</p>
+                    <p class="completion" *ngIf="!isError">{{noti}}</p>
                 </div>
-
                 <div>
-                    <button mat-raised-button color="primary" matStepperNext (click)="onClickBooking()">Đặt vé <span
-                            class="arrow">
-                            >
-                        </span>
-                    </button>
-                    <button mat-raised-button color="primary" matStepperPrevious>Trở lại</button>
-                    <button mat-raised-button color="primary">Huỷ</button>
+                    <button mat-raised-button color="primary" matStepperPrevious *ngIf="isError">Quay lại</button>
+                    <button mat-raised-button color="primary" *ngIf="!isError" (click)="onReturnHome()">Đặt vé khác</button>
                 </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
 
-                <div class="info-seat-grid" style="margin-top: 20px;">
-                    <div class="instruction">
-                        <div>
-                            <div class="instruction-header">Ghi chú</div>
-                            <div>Click vào sơ đồ ghế để chọn/bỏ chọn ghế</div>
-                        </div>
+    <footer>
 
-                        <div class="seat-instruction">
-                            <div class="seat-instruction-line">
-                                <div class="avail-seat">A1</div>
-                                <div>Ghế trống</div>
-                            </div>
-                            <div class="seat-instruction-line">
-                                <div class="unavail-seat">A4</div>
-                                <div>Ghế đã có khách</div>
-                            </div>
-                            <div class="seat-instruction-line">
-                                <div class="selected-seat">A3</div>
-                                <div>Ghế đã chọn</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </mat-step>
-        <mat-step>
-            <ng-template matStepLabel>Hoàn thành</ng-template>
-            <div class="result">
-                <mat-icon class="complete-icon">task_alt</mat-icon>
-                <p class="completion-error" *ngIf="isError">{{noti}}</p>
-                <p class="completion" *ngIf="!isError">{{noti}}</p>
-            </div>
-            <div>
-                <button mat-raised-button color="primary" matStepperPrevious>Quay lại</button>
-            </div>
-        </mat-step>
-    </mat-stepper>
+    </footer>
+
 </div>

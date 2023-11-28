@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DepartureService {
-  private basePath = 'http://localhost:8080/api/v1/departures';
+  private basePath = environment.apiUrl + '/departures';
 
   constructor(private httpClient: HttpClient) {}
 

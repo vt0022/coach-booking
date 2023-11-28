@@ -1,0 +1,124 @@
+<div class="container">
+    <div class="general-container">
+        <div class="select-container">
+            <div class="select-row">
+                <div class="select-column">
+                    <h4 class="select-label">Chọn điểm đi:</h4>
+                    <mat-form-field>
+                        <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                        <mat-select required>
+                            <mat-option [value]="">
+                                A
+                            </mat-option>
+                            <mat-option [value]="">
+                                B
+                            </mat-option>
+                            <mat-option [value]="">
+                                C
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="select-column">
+                    <h4 class="select-label">Chọn điểm đến:</h4>
+                    <mat-form-field>
+                        <mat-icon class="select-icon" matSuffix>place</mat-icon>
+                        <mat-select required>
+                            <mat-option [value]="">
+                                A
+                            </mat-option>
+                            <mat-option [value]="">
+                                B
+                            </mat-option>
+                            <mat-option [value]="">
+                                C
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="select-column">
+                    <h4 class="select-label">Chọn loại xe:</h4>
+                    <mat-form-field>
+                        <mat-icon class="select-icon" matSuffix>directions_bus</mat-icon>
+                        <mat-select required>
+                            <mat-option [value]="">
+                                A
+                            </mat-option>
+                            <mat-option [value]="">
+                                B
+                            </mat-option>
+                            <mat-option [value]="">
+                                C
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="select-row">
+                <div class="select-column">
+                    <h4 class="select-label">Chọn ngày xuất phát:</h4>
+                    <mat-form-field>
+                        <mat-icon class="select-icon" matSuffix>date_range</mat-icon>
+                        <mat-select required>
+                            <mat-option [value]="">
+                                A
+                            </mat-option>
+                            <mat-option [value]="">
+                                B
+                            </mat-option>
+                            <mat-option [value]="">
+                                C
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="select-column">
+                    <h4 class="select-label">Chọn chuyến xe:</h4>
+                    <mat-form-field>
+                        <mat-icon class="select-icon" matSuffix>departure_board</mat-icon>
+                        <mat-select required>
+                            <mat-option [value]="">
+                                A
+                            </mat-option>
+                            <mat-option [value]="">
+                                B
+                            </mat-option>
+                            <mat-option [value]="">
+                                C
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-container">
+
+        </div>
+    </div>
+
+    <div class="seat-container">
+        <div class="display-seat-column">
+            <div class="display-coach-type" style="font-size: large;">XE ĐI</div>
+            <div class="display-coach-type">Giường 34</div>
+            <div class="display-door">
+                <div class="driver">Lái xe</div>
+                <div class="door">Cửa lên</div>
+            </div>
+        
+            <div class="display-real-seat" [style.grid-template-columns]="'repeat(4, 1fr)'" style="height: 50px;">
+                <div class="seat">1</div>
+                <div class="seat">2</div>
+                <div class="fake-seat">&nbsp;</div>
+                <div class="seat">3</div>
+                <div class="seat">4</div>
+                <div class="seat">5</div>
+                <div class="fake-seat">&nbsp;</div>
+                <div class="seat">7</div>
+            </div>
+        </div>
+    </div>
+</div>

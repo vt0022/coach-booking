@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LineService {
-  private basePath = 'http://localhost:8080/api/v1/lines';
+  private basePath = environment.apiUrl + '/lines';
 
   constructor(private httpClient: HttpClient) {}
 
